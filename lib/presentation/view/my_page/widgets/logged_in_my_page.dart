@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gangaji_pul/service/auth/sign_in_with_google.dart';
 
 class LoggedInMyPage extends StatelessWidget {
   const LoggedInMyPage({super.key});
@@ -9,6 +10,13 @@ class LoggedInMyPage extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
       child: Column(
         children: [
+          // 테스트용 로그아웃
+          IconButton(
+            onPressed: () {
+              signOut();
+            },
+            icon: Icon(Icons.delete),
+          ),
           Row(
             children: [
               Container(
