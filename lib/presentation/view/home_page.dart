@@ -69,46 +69,56 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text("아이디", style: TextStyle(color: Colors.white, fontSize: 30)),
-                        Text("내용", style: TextStyle(color: Colors.white, fontSize: 25)),
-                        Text("#해시태그#태그", style: TextStyle(color: Colors.white, fontSize: 18)),
-                      ],
-                    ),
-                    Spacer(),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // 좋아요 api 요청
-                              isFavorite = !isFavorite;
-                            });
-                          },
-                          child:
-                              isFavorite
-                                  ? Icon(Icons.favorite, size: 50, color: Colors.red)
-                                  : Icon(Icons.favorite_border, size: 50, color: Colors.white),
-                        ),
-                        SizedBox(height: 20),
-                        GestureDetector(
-                          onTap: () {
-                            //바텀시트 오픈
-                          },
-                          child: Icon(Icons.chat_outlined, size: 50, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text("아이디", style: TextStyle(color: Colors.white, fontSize: 30)),
+                              SizedBox(width: 10),
+                              Text("${DateTime.now().month}월 ${DateTime.now().day}일", style: TextStyle(color: Colors.white, fontSize: 15)),
+                            ],
+                          ),
+                          Text("내용", style: TextStyle(color: Colors.white, fontSize: 25)),
+                          Text("#해시태그#태그", style: TextStyle(color: Colors.white, fontSize: 18)),
+                        ],
+                      ),
+                      Spacer(),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                // 좋아요 api 요청
+                                isFavorite = !isFavorite;
+                              });
+                            },
+                            child:
+                                isFavorite
+                                    ? Icon(Icons.favorite, size: 50, color: Colors.red)
+                                    : Icon(Icons.favorite_border, size: 50, color: Colors.white),
+                          ),
+                          SizedBox(height: 20),
+                          GestureDetector(
+                            onTap: () {
+                              //바텀시트 오픈
+                            },
+                            child: Icon(Icons.chat_outlined, size: 50, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
