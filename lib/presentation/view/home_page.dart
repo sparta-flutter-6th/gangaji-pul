@@ -78,7 +78,14 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text("아이디", style: TextStyle(color: Colors.white, fontSize: 30)),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("아이디", style: TextStyle(color: Colors.white, fontSize: 30)),
+                            SizedBox(width: 10),
+                            Text("${DateTime.now().month}월 ${DateTime.now().day}일", style: TextStyle(color: Colors.white, fontSize: 10)),
+                          ],
+                        ),
                         Text("내용", style: TextStyle(color: Colors.white, fontSize: 25)),
                         Text("#해시태그#태그", style: TextStyle(color: Colors.white, fontSize: 18)),
                       ],
