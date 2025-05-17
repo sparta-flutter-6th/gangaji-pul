@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 import 'package:gangaji_pul/service/auth/sign_in_with_google.dart';
 
-class LoggedInMyPage extends StatelessWidget {
+class LoggedInMyPage extends ConsumerWidget {
   const LoggedInMyPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
       child: Column(
@@ -38,14 +42,14 @@ class LoggedInMyPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'name',
+                        user!.displayName!,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        'email',
+                        user.email!,
                         style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       ),
                     ],
