@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gangaji_pul/presentation/view/home_page.dart';
-import 'package:gangaji_pul/presentation/view/my_page.dart';
+import 'package:gangaji_pul/presentation/view/my_page/my_page.dart';
 import 'package:gangaji_pul/presentation/view/post_page.dart';
 
 class BottomNavBar extends StatelessWidget {
