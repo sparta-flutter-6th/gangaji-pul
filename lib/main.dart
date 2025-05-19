@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/firebase_options.dart';
 import 'package:gangaji_pul/presentation/view/home_page.dart';
+import 'package:gangaji_pul/presentation/view/splash.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,6 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(home: HomePage());
+    return MaterialApp(home: SplashPage());
   }
 }
