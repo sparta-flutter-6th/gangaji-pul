@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/data/providers/post_repository_provider.dart';
 import 'package:gangaji_pul/domain/entity/post_view_entity.dart';
 
-class HomePageViewModel extends Notifier<List<PostViewEntity>> {
+class PostViewModel extends Notifier<List<PostViewEntity>> {
   @override
   List<PostViewEntity> build() => [];
 
@@ -14,5 +14,3 @@ class HomePageViewModel extends Notifier<List<PostViewEntity>> {
     state = [...state, newPost];
   }
 }
-
-final homePageViewModel = NotifierProvider<HomePageViewModel, List<PostViewEntity>>(() => HomePageViewModel());

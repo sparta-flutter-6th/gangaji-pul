@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
-import 'package:gangaji_pul/presentation/view/home_page/widget/favorite_button.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
-import 'package:gangaji_pul/presentation/view_model/home_page_view_model.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -20,18 +20,18 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final vm = ref.read(homePageViewModel.notifier);
-      await vm.fetchPost();
-      await vm.fetchPost();
+      final postViewmodel = ref.read(postViewModelProvider.notifier);
+      await postViewmodel.fetchPost();
+      await postViewmodel.fetchPost();
     });
 
     _pageController.addListener(() {
       final next = _pageController.page?.round() ?? 0;
       if (_currentIndex != next) {
         setState(() => _currentIndex = next);
-        final posts = ref.read(homePageViewModel);
+        final posts = ref.read(postViewModelProvider);
         if (next >= posts.length - 1) {
-          ref.read(homePageViewModel.notifier).fetchPost();
+          ref.read(postViewModelProvider.notifier).fetchPost();
         }
       }
     });
@@ -39,9 +39,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final posts = ref.watch(homePageViewModel);
+    final postsProvider = ref.watch(postViewModelProvider);
 
-    if (posts.length < 2) {
+    if (postsProvider.length < 2) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
@@ -51,9 +51,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.vertical,
-        itemCount: posts.length,
+        itemCount: postsProvider.length,
         itemBuilder: (context, index) {
-          final post = posts[index];
+          final post = postsProvider[index];
           return Stack(
             children: [
               SizedBox.expand(child: Image.network(post.imageUrl, fit: BoxFit.cover)),
@@ -75,7 +75,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          FavoriteButton(isFavorite: false),
+                          PostLikeButton(postId: post.postId),
                           const SizedBox(height: 20),
                           Icon(Icons.chat_outlined, size: 50, color: Colors.white),
                         ],
