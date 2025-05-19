@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sheet.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/favorite_button.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
 
@@ -35,7 +36,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _precacheNextImage(int index) {
-    final nextImage = NetworkImage('https://picsum.photos/200/300?random=$index');
+    final nextImage = NetworkImage(
+      'https://picsum.photos/200/300?random=$index',
+    );
     precacheImage(nextImage, context);
   }
 
@@ -57,7 +60,9 @@ class _HomePageState extends State<HomePage> {
           final imageUrl = 'https://picsum.photos/200/300?random=$index';
           return Stack(
             children: [
-              SizedBox.expand(child: Image.network(imageUrl, fit: BoxFit.cover)),
+              SizedBox.expand(
+                child: Image.network(imageUrl, fit: BoxFit.cover),
+              ),
               _shadeBox(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -66,7 +71,12 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      PostInfoColumn(id: "아이디", dateTime: "5월 16일", content: "강아지산책완료", hashTag: ["해쉬", "해쉬태그", "해시태그"]),
+                      PostInfoColumn(
+                        id: "아이디",
+                        dateTime: "5월 16일",
+                        content: "강아지산책완료",
+                        hashTag: ["해쉬", "해쉬태그", "해시태그"],
+                      ),
                       Spacer(),
                       Column(
                         mainAxisSize: MainAxisSize.min,
@@ -75,9 +85,24 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
-                              //바텀시트 오픈
+                              //바텀 시트 오픈
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                builder:
+                                    (context) => const CommentBottomSheet(),
+                              );
                             },
-                            child: Icon(Icons.chat_outlined, size: 50, color: Colors.white),
+                            child: Icon(
+                              Icons.chat_outlined,
+                              size: 50,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
