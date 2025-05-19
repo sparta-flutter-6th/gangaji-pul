@@ -16,4 +16,3 @@ final userServiceProvider = Provider<AuthService>((ref) {
 final userRepositoryProvider = Provider<UserRepository>((ref) {
   return UserRepositoryImpl();
 });
-

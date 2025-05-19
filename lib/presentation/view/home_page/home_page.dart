@@ -4,9 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
 import 'package:gangaji_pul/data/dto/post_dto.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sheet.dart';
 
-import 'package:gangaji_pul/presentation/view/home_page/widget/favorite_button.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -19,6 +20,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
   List<PostDto> posts = [];
+
   @override
   void initState() {
     super.initState();
@@ -55,19 +57,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
-  void _precacheNextImage(int index) {
-    final nextImage = NetworkImage(
-      'https://picsum.photos/200/300?random=$index',
-    );
-    precacheImage(nextImage, context);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final postsProvider = ref.watch(postViewModelProvider);
@@ -85,7 +74,6 @@ class _HomePageState extends ConsumerState<HomePage> {
         itemCount: postsProvider.length,
         itemBuilder: (context, index) {
           final post = postsProvider[index];
-          final imageUrl = 'https://picsum.photos/200/300?random=$index';
           return Stack(
             children: [
               SizedBox.expand(
@@ -110,11 +98,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          FavoriteButton(isFavorite: false),
+                          PostLikeButton(postId: post.postId),
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
                               //바텀시트 오픈
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                builder:
+                                    (_) =>
+                                        CommentBottomSheet(postId: post.postId),
+                              );
                             },
                             child: Icon(
                               Icons.chat_outlined,

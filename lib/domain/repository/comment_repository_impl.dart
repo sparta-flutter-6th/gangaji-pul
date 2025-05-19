@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gangaji_pul/data/dto/comment_dto.dart';
-import '../../domain/entity/comment.dart';
+import '../entity/comment_entity.dart';
 import '../../domain/repository/comment_repository.dart';
 
+/// Firestore에 접근하여 댓글을 불러오거나 저장
 class CommentRepositoryImpl implements CommentRepository {
   final FirebaseFirestore firestore;
 
@@ -17,7 +18,7 @@ class CommentRepositoryImpl implements CommentRepository {
             .collection('comments')
             .orderBy('timestamp')
             .get();
-
+    // Firestore 문서들을 DTO로 변환 → Entity로 변환 후 리스트로 반환
     return snapshot.docs
         .map((doc) => CommentDto.fromJson(doc.data(), doc.id))
         .map(
@@ -41,7 +42,7 @@ class CommentRepositoryImpl implements CommentRepository {
       text: comment.text,
       timestamp: comment.timestamp,
     );
-
+    // posts/{postId}/comments 경로에 Firestore 문서 추가
     await firestore
         .collection('posts')
         .doc(postId)

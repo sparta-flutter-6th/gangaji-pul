@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../../../../domain/entity/comment.dart';
+import '../../../../domain/entity/comment_entity.dart';
 import '../../../view_model/comment_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -30,7 +30,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
     final text = _controller.text.trim();
     if (text.isNotEmpty) {
       final comment = Comment(
-        id: '', // Firestore에서 자동 생성됨
+        id: '',
         userId: user.uid,
         userName: user.displayName ?? '익명',
         text: text,
@@ -65,7 +65,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
             ),
             const SizedBox(height: 12),
             SizedBox(
-              height: 300,
+              height: 450, //댓글 높이
               child: ListView.separated(
                 itemCount: comments.length,
                 separatorBuilder: (_, __) => const Divider(),
@@ -93,13 +93,12 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                 hintText: "댓글을 입력하세요",
                 border: OutlineInputBorder(),
               ),
-              maxLines: 2,
             ),
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: _submit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green[700],
+                backgroundColor: Color(0xFF688F4E),
               ),
               child: const Text("작성하기", style: TextStyle(color: Colors.white)),
             ),

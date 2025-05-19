@@ -1,4 +1,4 @@
-import '../entity/comment.dart';
+import '../entity/comment_entity.dart';
 
 abstract class CommentRepository {
   Future<List<Comment>> fetchComments(String postId);

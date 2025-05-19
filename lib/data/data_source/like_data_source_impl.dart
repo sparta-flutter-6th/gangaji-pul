@@ -8,17 +8,33 @@ class PostLikeDataSourceImpl implements PostLikeDataSource {
 
   @override
   Future<bool> isPostLikedByUser(String postId, String userId) async {
-    final doc = await _firebaseFirestore.collection('posts').doc(postId).collection('likes').doc(userId).get();
+    final doc =
+        await _firebaseFirestore
+            .collection('posts')
+            .doc(postId)
+            .collection('likes')
+            .doc(userId)
+            .get();
     return doc.exists;
   }
 
   @override
   Future<void> likePost(String postId, String userId) async {
-    await _firebaseFirestore.collection('posts').doc(postId).collection('likes').doc(userId).set({'likedAt': FieldValue.serverTimestamp()});
+    await _firebaseFirestore
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(userId)
+        .set({'likedAt': FieldValue.serverTimestamp()});
   }
 
   @override
   Future<void> unlikePost(String postId, String userId) async {
-    await _firebaseFirestore.collection('posts').doc(postId).collection('likes').doc(userId).delete();
+    await _firebaseFirestore
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(userId)
+        .delete();
   }
 }

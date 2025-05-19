@@ -17,6 +17,7 @@ class UserRemoteDataSource {
       email: data['email'],
       nickname: data['nickname'] ?? '',
       profileImageUrl: data['profileImageUrl'] ?? '',
+      bio: '',
     );
   }
 }
