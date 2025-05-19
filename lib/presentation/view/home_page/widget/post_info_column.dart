@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PostInfoColumn extends StatelessWidget {
-  const PostInfoColumn({super.key, required this.id, required this.dateTime, required this.content, required this.hashTag});
+  const PostInfoColumn({
+    super.key,
+    required this.id,
+    required this.dateTime,
+    required this.content,
+    required this.hashTag,
+  });
   final String id;
   final String dateTime;
   final String content;
@@ -22,7 +28,10 @@ class PostInfoColumn extends StatelessWidget {
           ],
         ),
         Text(content, style: TextStyle(color: Colors.white, fontSize: 25)),
-        Text(hashTag.map((e) => '#$e').join(), style: TextStyle(color: Colors.white, fontSize: 18)),
+        Text(
+          hashTag.map((e) => '#$e').join(),
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
       ],
     );
   }
