@@ -1,44 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../../../domain/entity/comment.dart';
+import '../../../view_model/comment_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class CommentBottomSheet extends StatefulWidget {
-  const CommentBottomSheet({super.key});
+class CommentBottomSheet extends ConsumerStatefulWidget {
+  final String postId;
+
+  const CommentBottomSheet({super.key, required this.postId});
 
   @override
-  State<CommentBottomSheet> createState() => _CommentBottomSheetState();
+  ConsumerState<CommentBottomSheet> createState() => _CommentBottomSheetState();
 }
 
-class _CommentBottomSheetState extends State<CommentBottomSheet> {
+class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
   final TextEditingController _controller = TextEditingController();
-
-  // 초기 댓글
-  final List<Map<String, dynamic>> _comments = [
-    {
-      'user': '익명1',
-      'text': '강아지 귀여워요',
-      'timestamp': DateTime.now().subtract(const Duration(hours: 1)),
-    },
-    {
-      'user': '익명2',
-      'text': '그쪽도요',
-      'timestamp': DateTime.now().subtract(const Duration(minutes: 30)),
-    },
-  ];
-
-  //더미 유저
-  void _submit() {
-    final text = _controller.text.trim();
-    if (text.isNotEmpty) {
-      setState(() {
-        _comments.add({
-          'user': '익명',
-          'text': text,
-          'timestamp': DateTime.now(),
-        });
-      });
-      _controller.clear();
-    }
-  }
 
   @override
   void dispose() {
@@ -46,8 +23,29 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     super.dispose();
   }
 
+  void _submit() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      final comment = Comment(
+        id: '', // Firestore에서 자동 생성됨
+        userId: user.uid,
+        userName: user.displayName ?? '익명',
+        text: text,
+        timestamp: DateTime.now(),
+      );
+      await ref
+          .read(commentListProvider(widget.postId).notifier)
+          .addComment(comment);
+      _controller.clear();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final comments = ref.watch(commentListProvider(widget.postId));
     final bottom = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
@@ -66,30 +64,28 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-
             SizedBox(
-              height: 450, //댓글창 높이
+              height: 300,
               child: ListView.separated(
-                itemCount: _comments.length,
-                separatorBuilder: (_, __) => const Divider(), //가로구분선
+                itemCount: comments.length,
+                separatorBuilder: (_, __) => const Divider(),
                 itemBuilder: (context, index) {
-                  final comment = _comments[index];
+                  final comment = comments[index];
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      comment['user'],
+                      comment.userName,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text(comment['text']),
+                    subtitle: Text(comment.text),
                     trailing: Text(
-                      DateFormat('HH:mm').format(comment['timestamp']),
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      DateFormat('HH:mm').format(comment.timestamp),
+                      style: const TextStyle(fontSize: 12),
                     ),
                   );
                 },
               ),
             ),
-
             const SizedBox(height: 12),
             TextField(
               controller: _controller,
@@ -97,7 +93,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 hintText: "댓글을 입력하세요",
                 border: OutlineInputBorder(),
               ),
-              maxLines: 1,
+              maxLines: 2,
             ),
             const SizedBox(height: 12),
             ElevatedButton(

@@ -7,5 +7,11 @@ class PostviewEntity {
   final String content;
   final List<String> tags;
 
-  PostviewEntity({required this.userId, required this.postId, required this.content, required this.tags, required this.createdAt});
+  PostviewEntity({
+    required this.userId,
+    required this.postId,
+    required this.content,
+    required this.tags,
+    required this.createdAt,
+  });
 }

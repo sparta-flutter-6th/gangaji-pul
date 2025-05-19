@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gangaji_pul/data/dto/post_dto.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sheet.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/favorite_button.dart';
@@ -15,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
   bool isFavorite = false;
+  List<PostDto> posts = [];
   @override
   void initState() {
     super.initState();
@@ -32,6 +35,21 @@ class _HomePageState extends State<HomePage> {
         });
         _precacheNextImage(next + 1);
       }
+    });
+  }
+
+  Future<void> fetchPosts() async {
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('createdAt', descending: true)
+            .get();
+
+    setState(() {
+      posts =
+          snapshot.docs
+              .map((doc) => PostDto.fromFirebase(doc.data(), doc.id))
+              .toList();
     });
   }
 
@@ -58,6 +76,7 @@ class _HomePageState extends State<HomePage> {
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           final imageUrl = 'https://picsum.photos/200/300?random=$index';
+          final post = posts[index]; //추가한거
           return Stack(
             children: [
               SizedBox.expand(
@@ -95,7 +114,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 builder:
-                                    (context) => const CommentBottomSheet(),
+                                    (context) =>
+                                        CommentBottomSheet(postId: post.postId),
                               );
                             },
                             child: Icon(
