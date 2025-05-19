@@ -1,19 +1,31 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:gangaji_pul/domain/repository/ai_image_repository.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:gangaji_pul/service/yolo/yolo_detection.dart';
 
-class WritingViewModel extends ChangeNotifier {
-  final AiImageRepository aiRepo;
+class WritingViewModel {
+  final YoloDetection aiService = YoloDetection();
+  final TextEditingController tagController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
 
-  WritingViewModel(this.aiRepo);
+  File? selectedImage;
+  bool isImageValid = false;
+  bool isLoading = false;
 
-  Future<bool> validateImage(File image) async {
-    final result = await aiRepo.analyze(image);
+  Future<void> init() async {
+    await aiService.init();
+  }
 
-    final isDog = result['dog'] ?? false;
-    final isGrass = result['grass'] ?? false;
-    final isPerson = result['person'] ?? false;
+  Future<bool> pickAndValidateImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked == null) return false;
 
-    return isDog && isGrass && !isPerson;
+    final image = File(picked.path);
+    final isValid = await aiService.validateImage(image);
+
+    isImageValid = isValid;
+    selectedImage = isValid ? image : null;
+    return isValid;
   }
 }
