@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/favorite_button.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,7 +50,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       bottomNavigationBar: BottomNavBar(currentIndex: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       body: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.vertical,
@@ -57,18 +58,7 @@ class _HomePageState extends State<HomePage> {
           return Stack(
             children: [
               SizedBox.expand(child: Image.network(imageUrl, fit: BoxFit.cover)),
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.7), // 아래로 갈수록 어두워짐
-                    ],
-                  ),
-                ),
-              ),
+              _shadeBox(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Align(
@@ -76,38 +66,12 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text("아이디", style: TextStyle(color: Colors.white, fontSize: 30)),
-                              SizedBox(width: 10),
-                              Text("${DateTime.now().month}월 ${DateTime.now().day}일", style: TextStyle(color: Colors.white, fontSize: 15)),
-                            ],
-                          ),
-                          Text("내용", style: TextStyle(color: Colors.white, fontSize: 25)),
-                          Text("#해시태그#태그", style: TextStyle(color: Colors.white, fontSize: 18)),
-                        ],
-                      ),
+                      PostInfoColumn(id: "아이디", dateTime: "5월 16일", content: "강아지산책완료", hashTag: ["해쉬", "해쉬태그", "해시태그"]),
                       Spacer(),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                // 좋아요 api 요청
-                                isFavorite = !isFavorite;
-                              });
-                            },
-                            child:
-                                isFavorite
-                                    ? Icon(Icons.favorite, size: 50, color: Colors.red)
-                                    : Icon(Icons.favorite_border, size: 50, color: Colors.white),
-                          ),
+                          FavoriteButton(isFavorite: false),
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
@@ -124,6 +88,18 @@ class _HomePageState extends State<HomePage> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Container _shadeBox() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.transparent, Colors.black.withValues(alpha: 0.7)],
+        ),
       ),
     );
   }

@@ -15,7 +15,7 @@ class MyPage extends ConsumerWidget {
       backgroundColor: Color(0xFFEAE3C0),
       bottomNavigationBar: BottomNavBar(currentIndex: 2),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: user == null ? GuestMyPage() : LoggedInMyPage(),
+      body: user != null ? LoggedInMyPage() : GuestMyPage(),
     );
   }
 }
