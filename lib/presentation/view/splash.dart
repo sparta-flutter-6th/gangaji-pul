@@ -44,11 +44,11 @@ class _SplashPageState extends State<SplashPage> {
                     shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
                   ),
                 ),
-                const SizedBox(height: 16),
+
                 Image.asset(
                   'assets/images/gaepull.png',
-                  width: 160,
-                  height: 160,
+                  width: 180,
+                  height: 180,
                 ),
               ],
             ),
