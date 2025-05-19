@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart'; //
+import 'package:gangaji_pul/presentation/view/home_page/home_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
