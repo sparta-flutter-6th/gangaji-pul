@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:gangaji_pul/service/auth/sign_in_with_google.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
+import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 
-class LoggedInMyPage extends StatelessWidget {
+class LoggedInMyPage extends ConsumerWidget {
   const LoggedInMyPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userViewModelProvider);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
       child: Column(
         children: [
           // 테스트용 로그아웃
-          IconButton(
-            onPressed: () {
-              signOut();
+          Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              final userService = ref.read(userServiceProvider);
+              return IconButton(
+                onPressed: () {
+                  userService.signOut();
+                },
+                icon: Icon(Icons.delete),
+              );
             },
-            icon: Icon(Icons.delete),
           ),
           Row(
             children: [
@@ -37,15 +46,21 @@ class LoggedInMyPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'name',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            user!.name,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                       Text(
-                        'email',
+                        // 이메일에서 아이디만 추출
+                        (user.email).split('@')[0],
                         style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       ),
                     ],
