@@ -1,39 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gangaji_pul/data/dto/post_dto.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
-import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sheet.dart';
+import 'package:gangaji_pul/data/dto/post_dto.dart';
+
 import 'package:gangaji_pul/presentation/view/home_page/widget/favorite_button.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
-  bool isFavorite = false;
   List<PostDto> posts = [];
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _precacheNextImage(1);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final postViewmodel = ref.read(postViewModelProvider.notifier);
+      await postViewmodel.fetchPost();
+      await postViewmodel.fetchPost();
     });
 
     _pageController.addListener(() {
-      int next = _pageController.page?.round() ?? 0;
+      final next = _pageController.page?.round() ?? 0;
       if (_currentIndex != next) {
-        setState(() {
-          _currentIndex = next;
-          isFavorite = false;
-        });
-        _precacheNextImage(next + 1);
+        setState(() => _currentIndex = next);
+        final posts = ref.read(postViewModelProvider);
+        if (next >= posts.length - 1) {
+          ref.read(postViewModelProvider.notifier).fetchPost();
+        }
       }
     });
   }
@@ -68,19 +70,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final postsProvider = ref.watch(postViewModelProvider);
+
+    if (postsProvider.length < 2) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     return Scaffold(
       bottomNavigationBar: BottomNavBar(currentIndex: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.vertical,
+        itemCount: postsProvider.length,
         itemBuilder: (context, index) {
+          final post = postsProvider[index];
           final imageUrl = 'https://picsum.photos/200/300?random=$index';
-          final post = posts[index]; //추가한거
           return Stack(
             children: [
               SizedBox.expand(
-                child: Image.network(imageUrl, fit: BoxFit.cover),
+                child: Image.network(post.imageUrl, fit: BoxFit.cover),
               ),
               _shadeBox(),
               Padding(
@@ -91,12 +100,13 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       PostInfoColumn(
-                        id: "아이디",
-                        dateTime: "5월 16일",
-                        content: "강아지산책완료",
-                        hashTag: ["해쉬", "해쉬태그", "해시태그"],
+                        id: post.userId,
+                        dateTime:
+                            "${post.createdAt.month}월 ${post.createdAt.day}일",
+                        content: post.content,
+                        hashTag: post.tags,
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -104,19 +114,7 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
-                              //바텀 시트 오픈
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                builder:
-                                    (context) =>
-                                        CommentBottomSheet(postId: post.postId),
-                              );
+                              //바텀시트 오픈
                             },
                             child: Icon(
                               Icons.chat_outlined,
@@ -143,7 +141,7 @@ class _HomePageState extends State<HomePage> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Colors.transparent, Colors.black.withValues(alpha: 0.7)],
+          colors: [Colors.transparent, Colors.black.withAlpha(180)],
         ),
       ),
     );
