@@ -1,22 +1,27 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/domain/repository/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  UserRepositoryImpl({required FirebaseAuth firebaseAuth})
-    : _firebaseAuth = firebaseAuth;
-
-  final FirebaseAuth _firebaseAuth;
+  final userCollection = FirebaseFirestore.instance.collection('users');
 
   @override
-  Future<UserModel?> getCurrentUser() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) return null;
-
-    return UserModel(
-      uid: user.uid,
-      name: user.displayName ?? '',
-      email: user.email ?? '',
-    );
+  Future<void> saveUser(String uid, String email, String name) async {
+    userCollection.doc(uid).set({
+      'uid': uid,
+      'email': email,
+      'name': name,
+      'nickname': '',
+      'profileImageUrl': '',
+      'bio': '',
+    }, SetOptions(merge: true));
   }
+
+  @override
+  Future<UserModel> getUser(String uid) async {
+    final userDoc = await userCollection.doc(uid).get();
+    final userData = userDoc.data();
+    return UserModel.fromJson(userData!);
+  }
+
 }

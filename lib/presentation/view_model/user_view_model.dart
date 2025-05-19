@@ -1,37 +1,41 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
+import 'package:gangaji_pul/data/repository/user_repository_impl.dart';
 
-final userViewModelProvider = NotifierProvider<UserViewModel, UserModel?>(
-  () => UserViewModel(),
-);
+final userViewModelProvider = NotifierProvider<UserViewModel, UserModel?>(() {
+  return UserViewModel();
+});
 
 class UserViewModel extends Notifier<UserModel?> {
-  late final Stream<User?> _authStateChanges;
+  late final StreamSubscription<User?> _authSubscription;
+  final UserRepositoryImpl userRepositoryImpl = UserRepositoryImpl();
 
   @override
   UserModel? build() {
-    _authStateChanges = FirebaseAuth.instance.authStateChanges();
-    _authStateChanges.listen((user) {
+    _authSubscription = FirebaseAuth.instance.authStateChanges().listen((
+      user,
+    ) async {
       if (user == null) {
         state = null;
       } else {
-        state = UserModel(
-          uid: user.uid,
-          name: user.displayName!,
-          email: user.email!,
+        await userRepositoryImpl.saveUser(
+          user.uid,
+          user.email ?? '',
+          user.displayName ?? '',
         );
+        final userModel = await userRepositoryImpl.getUser(user.uid);
+        state = userModel;
       }
     });
 
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return null;
-    }
-    return UserModel(
-      uid: user.uid,
-      name: user.displayName!,
-      email: user.email!,
-    );
+    // dispose될 때 stream 정리
+    ref.onDispose(() {
+      _authSubscription.cancel();
+    });
+
+    return null;
   }
 }

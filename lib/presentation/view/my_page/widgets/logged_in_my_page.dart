@@ -9,22 +9,18 @@ class LoggedInMyPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userViewModelProvider);
+    final userService = ref.read(userServiceProvider);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
       child: Column(
         children: [
           // 테스트용 로그아웃
-          Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final userService = ref.read(userServiceProvider);
-              return IconButton(
-                onPressed: () {
-                  userService.signOut();
-                },
-                icon: Icon(Icons.delete),
-              );
+          IconButton(
+            onPressed: () {
+              userService.signOut();
             },
+            icon: Icon(Icons.delete),
           ),
           Row(
             children: [
@@ -59,7 +55,6 @@ class LoggedInMyPage extends ConsumerWidget {
                         ],
                       ),
                       Text(
-                        // 이메일에서 아이디만 추출
                         (user.email).split('@')[0],
                         style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       ),
