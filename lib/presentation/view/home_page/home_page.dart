@@ -1,63 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
-import 'package:gangaji_pul/presentation/view/home_page/widget/favorite_button.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
-  bool isFavorite = false;
+
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _precacheNextImage(1);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final postViewmodel = ref.read(postViewModelProvider.notifier);
+      await postViewmodel.fetchPost();
+      await postViewmodel.fetchPost();
     });
 
     _pageController.addListener(() {
-      int next = _pageController.page?.round() ?? 0;
+      final next = _pageController.page?.round() ?? 0;
       if (_currentIndex != next) {
-        setState(() {
-          _currentIndex = next;
-          isFavorite = false;
-        });
-        _precacheNextImage(next + 1);
+        setState(() => _currentIndex = next);
+        final posts = ref.read(postViewModelProvider);
+        if (next >= posts.length - 1) {
+          ref.read(postViewModelProvider.notifier).fetchPost();
+        }
       }
     });
   }
 
-  void _precacheNextImage(int index) {
-    final nextImage = NetworkImage('https://picsum.photos/200/300?random=$index');
-    precacheImage(nextImage, context);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final postsProvider = ref.watch(postViewModelProvider);
+
+    if (postsProvider.length < 2) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     return Scaffold(
       bottomNavigationBar: BottomNavBar(currentIndex: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.vertical,
+        itemCount: postsProvider.length,
         itemBuilder: (context, index) {
-          final imageUrl = 'https://picsum.photos/200/300?random=$index';
+          final post = postsProvider[index];
           return Stack(
             children: [
-              SizedBox.expand(child: Image.network(imageUrl, fit: BoxFit.cover)),
+              SizedBox.expand(child: Image.network(post.imageUrl, fit: BoxFit.cover)),
               _shadeBox(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -66,19 +65,19 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      PostInfoColumn(id: "아이디", dateTime: "5월 16일", content: "강아지산책완료", hashTag: ["해쉬", "해쉬태그", "해시태그"]),
-                      Spacer(),
+                      PostInfoColumn(
+                        id: post.userId,
+                        dateTime: "${post.createdAt.month}월 ${post.createdAt.day}일",
+                        content: post.content,
+                        hashTag: post.tags,
+                      ),
+                      const Spacer(),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          FavoriteButton(isFavorite: false),
-                          SizedBox(height: 20),
-                          GestureDetector(
-                            onTap: () {
-                              //바텀시트 오픈
-                            },
-                            child: Icon(Icons.chat_outlined, size: 50, color: Colors.white),
-                          ),
+                          PostLikeButton(postId: post.postId),
+                          const SizedBox(height: 20),
+                          Icon(Icons.chat_outlined, size: 50, color: Colors.white),
                         ],
                       ),
                     ],
@@ -95,11 +94,7 @@ class _HomePageState extends State<HomePage> {
   Container _shadeBox() {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.transparent, Colors.black.withValues(alpha: 0.7)],
-        ),
+        gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Colors.black.withAlpha(180)]),
       ),
     );
   }
