@@ -18,6 +18,8 @@ class UserRemoteDataSource {
       nickname: data['nickname'] ?? '',
       profileImageUrl: data['profileImageUrl'] ?? '',
       bio: '',
+      likeCount: data['likeCount'] ?? 0,
+      postCount: data['postCount'] ?? 0,
     );
   }
 }
