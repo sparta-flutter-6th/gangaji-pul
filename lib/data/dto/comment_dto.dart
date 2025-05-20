@@ -6,6 +6,7 @@ class CommentDto {
   final String userName; //작성자 이름
   final String text; //댓글 내용
   final DateTime timestamp; //댓글 작성 시간
+  final String? parentId;
 
   CommentDto({
     required this.id,
@@ -13,6 +14,7 @@ class CommentDto {
     required this.userName,
     required this.text,
     required this.timestamp,
+    this.parentId,
   });
 
   /// Firestore에서 가져온 JSON 데이터를 CommentDto 객체로 변환하는 팩토리 생성자
@@ -23,6 +25,7 @@ class CommentDto {
       userName: json['userName'],
       text: json['text'],
       timestamp: (json['timestamp'] as Timestamp).toDate(),
+      parentId: json['parentId'],
     );
   }
 
@@ -33,6 +36,7 @@ class CommentDto {
       'userName': userName,
       'text': text,
       'timestamp': timestamp,
+      'parentId': parentId,
     };
   }
 }

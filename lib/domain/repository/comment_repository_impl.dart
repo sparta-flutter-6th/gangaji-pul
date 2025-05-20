@@ -28,6 +28,7 @@ class CommentRepositoryImpl implements CommentRepository {
             userName: dto.userName,
             text: dto.text,
             timestamp: dto.timestamp,
+            parentId: dto.parentId,
           ),
         )
         .toList();
@@ -41,6 +42,7 @@ class CommentRepositoryImpl implements CommentRepository {
       userName: comment.userName,
       text: comment.text,
       timestamp: comment.timestamp,
+      parentId: comment.parentId,
     );
     // posts/{postId}/comments 경로에 Firestore 문서 추가
     await firestore
@@ -48,5 +50,15 @@ class CommentRepositoryImpl implements CommentRepository {
         .doc(postId)
         .collection('comments')
         .add(dto.toJson());
+  }
+
+  @override
+  Future<void> deleteComment(String postId, String commentId) async {
+    await firestore
+        .collection('posts')
+        .doc(postId)
+        .collection('comments')
+        .doc(commentId)
+        .delete();
   }
 }

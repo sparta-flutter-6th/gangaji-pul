@@ -33,4 +33,10 @@ class CommentListViewModel extends StateNotifier<List<Comment>> {
     await repository.addComment(postId, comment);
     state = [...state, comment];
   }
+
+  //댓글 삭제
+  Future<void> deleteComment(String commentId) async {
+    await repository.deleteComment(postId, commentId);
+    state = state.where((c) => c.id != commentId).toList();
+  }
 }
