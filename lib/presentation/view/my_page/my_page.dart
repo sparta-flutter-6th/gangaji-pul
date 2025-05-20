@@ -11,11 +11,6 @@ class MyPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userViewModelProvider);
-    return Scaffold(
-      backgroundColor: Color(0xFFEAE3C0),
-      bottomNavigationBar: BottomNavBar(currentIndex: 2),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: user != null ? LoggedInMyPage() : GuestMyPage(),
-    );
+    return Scaffold(backgroundColor: Color(0xFFEAE3C0), body: user != null ? LoggedInMyPage() : GuestMyPage());
   }
 }

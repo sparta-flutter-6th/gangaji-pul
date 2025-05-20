@@ -9,6 +9,7 @@ import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sh
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
 import 'package:gangaji_pul/presentation/view/writing_page.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -60,10 +61,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(currentIndex: 0),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const WritingPage()));
+          context.push('/write');
         },
 
         backgroundColor: Color(0xFF688F4E),
