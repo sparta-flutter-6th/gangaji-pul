@@ -18,5 +18,9 @@ class PostDataSourceImpl implements PostDataSource {
   }
 
   @override
-  Future<void> createPost() async {}
+Future<void> createPost(PostDto postDto) async {
+  final docRef = _firebaseFirestore.collection('posts').doc(postDto.postId);
+  await docRef.set(postDto.toFirebase());
+}
+
 }
