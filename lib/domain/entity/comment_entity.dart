@@ -1,10 +1,10 @@
 class Comment {
-  final String id;
-  final String userId;
-  final String userName;
-  final String text;
-  final DateTime timestamp;
-  final String? parentId; // <- 답글일 경우 원본 댓글의 ID
+  final String id; // 댓글 고유 ID
+  final String userId; // Firebase 사용자 UID
+  final String userName; // 사용자 이름
+  final String text; // 댓글 내용
+  final DateTime timestamp; // 작성 시간
+  final String? parentId; // 답글이면 상위 댓글 ID
 
   Comment({
     required this.id,

@@ -16,7 +16,7 @@ class CommentBottomSheet extends ConsumerStatefulWidget {
 
 class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
   final TextEditingController _controller = TextEditingController();
-  String? replyingToId; // 답글 대상 댓글 ID
+  Comment? replyingTo;
 
   @override
   void dispose() {
@@ -36,13 +36,14 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
         userName: user.displayName ?? '익명',
         text: text,
         timestamp: DateTime.now(),
-        parentId: replyingToId,
+        parentId: replyingTo?.id,
       );
+
       await ref
           .read(commentListProvider(widget.postId).notifier)
           .addComment(comment);
       _controller.clear();
-      setState(() => replyingToId = null); // 답글 완료 후 초기화
+      setState(() => replyingTo = null);
     }
   }
 
@@ -58,9 +59,8 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     final currentUser = FirebaseAuth.instance.currentUser;
 
-    // 댓글을 parentId 기준으로 분류
     final parentComments = comments.where((c) => c.parentId == null).toList();
-    final Map<String, List<Comment>> repliesMap = {};
+    final repliesMap = <String, List<Comment>>{};
     for (var comment in comments) {
       if (comment.parentId != null) {
         repliesMap.putIfAbsent(comment.parentId!, () => []).add(comment);
@@ -84,55 +84,82 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
             ),
             const SizedBox(height: 12),
 
-            // 댓글 목록
+            /// 🔽 댓글 영역 높이 고정 (350으로 줄임)
             SizedBox(
-              height: 450,
+              height: 350,
               child: ListView.builder(
                 itemCount: parentComments.length,
                 itemBuilder: (context, index) {
                   final parent = parentComments[index];
-                  final isReplyTarget = replyingToId == parent.id;
+                  final isReplyTarget = replyingTo?.id == parent.id;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildCommentTile(parent, currentUser, isReplyTarget),
-                      if (repliesMap.containsKey(parent.id))
+                      _buildCommentTile(
+                        parent,
+                        currentUser,
+                        isReplyTarget,
+                        isReply: false,
+                      ),
+                      if (repliesMap[parent.id] != null)
                         ...repliesMap[parent.id!]!.map(
                           (reply) => Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: _buildCommentTile(reply, currentUser, false),
+                            padding: const EdgeInsets.only(left: 24),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "ㄴ ",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Expanded(
+                                  child: _buildCommentTile(
+                                    reply,
+                                    currentUser,
+                                    false,
+                                    isReply: true,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                      const Divider(),
                     ],
                   );
                 },
               ),
             ),
 
-            const SizedBox(height: 12),
-            if (replyingToId != null)
+            const SizedBox(height: 8),
+            if (replyingTo != null)
               Row(
                 children: [
                   const Icon(Icons.reply, size: 16),
                   const SizedBox(width: 4),
-                  const Text('답글 작성 중...', style: TextStyle(fontSize: 12)),
+                  Text(
+                    '${replyingTo!.userName}님에게 답글 작성 중...',
+                    style: const TextStyle(fontSize: 12),
+                  ),
                   const Spacer(),
                   TextButton(
-                    onPressed: () => setState(() => replyingToId = null),
+                    onPressed: () => setState(() => replyingTo = null),
                     child: const Text("취소"),
                   ),
                 ],
               ),
+
             TextField(
               controller: _controller,
               minLines: 1,
-              maxLines: 4,
+              maxLines: 5,
               decoration: const InputDecoration(
                 hintText: "댓글을 입력하세요",
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
+
             ElevatedButton(
               onPressed: _submit,
               style: ElevatedButton.styleFrom(
@@ -149,11 +176,18 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
   Widget _buildCommentTile(
     Comment comment,
     User? currentUser,
-    bool isReplyTarget,
-  ) {
+    bool isReplyTarget, {
+    required bool isReply,
+  }) {
     return Container(
-      color: isReplyTarget ? const Color(0xFFE6EEDD) : null,
+      decoration: BoxDecoration(
+        color: isReplyTarget ? const Color(0xFFE6EEDD) : null,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: ListTile(
+        dense: true,
         contentPadding: EdgeInsets.zero,
         title: Text(
           comment.userName,
@@ -171,25 +205,32 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const Spacer(),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'reply') {
-                      setState(() => replyingToId = comment.id);
-                    } else if (value == 'delete') {
-                      _deleteComment(comment.id);
-                    }
-                  },
-                  itemBuilder:
-                      (_) => [
-                        const PopupMenuItem(value: 'reply', child: Text('답글')),
-                        if (currentUser != null &&
-                            currentUser.uid == comment.userId)
-                          const PopupMenuItem(
-                            value: 'delete',
-                            child: Text('삭제'),
-                          ),
-                      ],
-                  icon: const Icon(Icons.more_vert, size: 16),
+
+                /// 메뉴: 일반 댓글 → 답글 + 삭제 / 답글 → 삭제만
+                Row(
+                  children: [
+                    if (!isReply)
+                      IconButton(
+                        onPressed: () => setState(() => replyingTo = comment),
+                        icon: const Icon(Icons.reply, size: 16),
+                      ),
+                    PopupMenuButton<String>(
+                      onSelected: (value) {
+                        if (value == 'delete') {
+                          _deleteComment(comment.id);
+                        }
+                      },
+                      itemBuilder:
+                          (_) => [
+                            if (currentUser?.uid == comment.userId)
+                              const PopupMenuItem(
+                                value: 'delete',
+                                child: Text('삭제'),
+                              ),
+                          ],
+                      icon: const Icon(Icons.more_vert, size: 16),
+                    ),
+                  ],
                 ),
               ],
             ),
