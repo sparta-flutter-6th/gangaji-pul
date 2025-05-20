@@ -39,5 +39,4 @@ flutter:
   assets:
     - assets/models/yolov8n.tflite
     - assets/models/labels.txt
-    - assets/image/
     - assets/images/

@@ -71,7 +71,7 @@ class LoggedInMyPage extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             height: 300,
-            child: Image.asset('assets/image/grass.png', fit: BoxFit.cover),
+            child: Image.asset('assets/images/grass.png', fit: BoxFit.cover),
           ),
         ],
       ),
