@@ -21,50 +21,23 @@ class BottomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(
-                  Icons.home,
-                  color: currentIndex == 0 ? Colors.green : Colors.grey,
-                ),
+                icon: Icon(Icons.home, color: currentIndex == 0 ? Colors.green : Colors.grey),
                 onPressed: () {
                   if (currentIndex != 0) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const HomePage()),
-                    );
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomePage()));
                   }
                 },
               ),
               const SizedBox(width: 48),
               IconButton(
-                icon: Icon(
-                  Icons.person,
-                  color: currentIndex == 2 ? Colors.green : Colors.grey,
-                ),
+                icon: Icon(Icons.person, color: currentIndex == 2 ? Colors.green : Colors.grey),
                 onPressed: () {
                   if (currentIndex != 2) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const MyPage()),
-                    );
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MyPage()));
                   }
                 },
               ),
             ],
-          ),
-        ),
-        Positioned(
-          bottom: 30, //위치수정
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const WritingPage()),
-              );
-            },
-
-            backgroundColor: Color(0xFF688F4E),
-
-            child: const Icon(Icons.edit, color: Color(0xFFF4F1E9)),
           ),
         ),
       ],

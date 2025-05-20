@@ -21,9 +21,7 @@ class _PostLikeButtonState extends ConsumerState<PostLikeButton> {
     _isLike = likeMap[widget.postId] ?? false;
 
     if (!likeMap.containsKey(widget.postId)) {
-      ref
-          .read(postLikeViewModelProvider.notifier)
-          .fetchLikeStatus(widget.postId);
+      ref.read(postLikeViewModelProvider.notifier).fetchLikeStatus(widget.postId);
     }
   }
 
@@ -33,18 +31,12 @@ class _PostLikeButtonState extends ConsumerState<PostLikeButton> {
 
     return GestureDetector(
       onTap: () async {
-        await ref
-            .read(postLikeViewModelProvider.notifier)
-            .toggleLike(widget.postId);
+        await ref.read(postLikeViewModelProvider.notifier).toggleLike(widget.postId);
         setState(() {
           _isLike = !_isLike;
         });
       },
-      child: Icon(
-        _isLike ? Icons.favorite : Icons.favorite_border,
-        size: 50,
-        color: _isLike ? Colors.red : Colors.white,
-      ),
+      child: Icon(_isLike ? Icons.favorite : Icons.favorite_border, size: 40, color: _isLike ? Colors.red : Colors.white),
     );
   }
 }
