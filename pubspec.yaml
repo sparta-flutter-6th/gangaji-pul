@@ -14,6 +14,8 @@ dependencies:
   firebase_auth: ^5.5.3
   flutter_riverpod: ^2.6.1
   cloud_firestore: ^5.6.7
+  firebase_crashlytics: ^4.3.5
+  firebase_analytics: ^11.4.5
   intl: ^0.20.2
   image_picker: ^1.1.2
   http: ^1.4.0
@@ -24,8 +26,6 @@ dependencies:
       url: https://github.com/fhelper/flutter-yolo-helper.git
       ref: main
   provider: ^6.1.5
-
-
 
 dev_dependencies:
   flutter_test:
