@@ -101,9 +101,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                           SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
-                              //바텀시트 오픈
                               showModalBottomSheet(
-                                context: context,
+                                context: Navigator.of(context, rootNavigator: true).context,
                                 isScrollControlled: true,
                                 shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                                 builder: (_) => CommentBottomSheet(postId: post.postId),
