@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
 import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
-import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
+import 'package:gangaji_pul/data/dto/post_dto.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sheet.dart';
+
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
+import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -15,6 +19,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
+  List<PostDto> posts = [];
 
   @override
   void initState() {
@@ -37,6 +42,21 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  Future<void> fetchPosts() async {
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('createdAt', descending: true)
+            .get();
+
+    setState(() {
+      posts =
+          snapshot.docs
+              .map((doc) => PostDto.fromFirebase(doc.data(), doc.id))
+              .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final postsProvider = ref.watch(postViewModelProvider);
@@ -56,7 +76,9 @@ class _HomePageState extends ConsumerState<HomePage> {
           final post = postsProvider[index];
           return Stack(
             children: [
-              SizedBox.expand(child: Image.network(post.imageUrl, fit: BoxFit.cover)),
+              SizedBox.expand(
+                child: Image.network(post.imageUrl, fit: BoxFit.cover),
+              ),
               _shadeBox(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -67,7 +89,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     children: [
                       PostInfoColumn(
                         id: post.userId,
-                        dateTime: "${post.createdAt.month}월 ${post.createdAt.day}일",
+                        dateTime:
+                            "${post.createdAt.month}월 ${post.createdAt.day}일",
                         content: post.content,
                         hashTag: post.tags,
                       ),
@@ -76,8 +99,29 @@ class _HomePageState extends ConsumerState<HomePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           PostLikeButton(postId: post.postId),
-                          const SizedBox(height: 20),
-                          Icon(Icons.chat_outlined, size: 50, color: Colors.white),
+                          SizedBox(height: 20),
+                          GestureDetector(
+                            onTap: () {
+                              //바텀시트 오픈
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                builder:
+                                    (_) =>
+                                        CommentBottomSheet(postId: post.postId),
+                              );
+                            },
+                            child: Icon(
+                              Icons.chat_outlined,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -94,7 +138,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   Container _shadeBox() {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Colors.black.withAlpha(180)]),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.transparent, Colors.black.withAlpha(180)],
+        ),
       ),
     );
   }

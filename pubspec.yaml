@@ -15,6 +15,18 @@ dependencies:
   flutter_riverpod: ^2.6.1
   cloud_firestore: ^5.6.7
   firebase_analytics: ^11.4.5
+  intl: ^0.20.2
+  image_picker: ^1.1.2
+  http: ^1.4.0
+  tflite_flutter: ^0.11.0
+  image: ^3.3.0
+  yolo_helper:
+    git:
+      url: https://github.com/fhelper/flutter-yolo-helper.git
+      ref: main
+  provider: ^6.1.5
+
+
 
 dev_dependencies:
   flutter_test:
@@ -25,5 +37,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/models/yolov8n.tflite
+    - assets/models/labels.txt
     - assets/image/
     - assets/images/
