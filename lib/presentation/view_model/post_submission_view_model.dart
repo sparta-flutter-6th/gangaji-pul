@@ -31,23 +31,18 @@ class PostSubmissionViewModel {
     required String content,
     required List<String> tags,
     required File imageFile,
+    required UserModel user,
   }) async {
     try {
-      // 1. 로그인 유저 확인
-      final firebaseUser = FirebaseAuth.instance.currentUser;
-      if (firebaseUser == null) throw Exception("로그인 필요");
-
-      // 2. 유저 정보 조회
-      final UserModel? user = await userRemoteDataSource.getUserByUid(firebaseUser.uid);
-      if (user == null) throw Exception("사용자 정보 없음");
-
-      // 3. 이미지 Storage에 업로드
+      // 1. 유저 정보 바로 사용
       final fileName = const Uuid().v4();
-      final ref = FirebaseStorage.instance.ref().child("post_images/$fileName.jpg");
+      final ref = FirebaseStorage.instance.ref().child(
+        "post_images/$fileName.jpg",
+      );
       final uploadTask = await ref.putFile(imageFile);
       final imageUrl = await uploadTask.ref.getDownloadURL();
 
-      // 4. PostRepository로 글 생성
+      // 2. Post 저장
       await repository.createPost(
         content: content,
         tags: tags,
