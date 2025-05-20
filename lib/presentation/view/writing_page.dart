@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/domain/entity/user_model.dart';
+import 'package:gangaji_pul/presentation/common/custom_snackbar.dart';
 import 'package:gangaji_pul/presentation/view_model/yolo_view_model.dart';
 import 'package:gangaji_pul/presentation/view_model/post_submission_view_model.dart';
+import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 
 class WritingPage extends ConsumerStatefulWidget {
   const WritingPage({super.key});
@@ -15,7 +18,6 @@ class _WritingPageState extends ConsumerState<WritingPage> {
   final YoloViewModel yolo = YoloViewModel();
   final TextEditingController _tagController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-
   List<String> _tags = [];
 
   @override
@@ -25,15 +27,9 @@ class _WritingPageState extends ConsumerState<WritingPage> {
   }
 
   Future<void> handlePickImage() async {
-    setState(() {
-      yolo.isLoading = true;
-    });
-
+    setState(() => yolo.isLoading = true);
     final isValid = await yolo.pickAndValidateImage();
-
-    setState(() {
-      yolo.isLoading = false;
-    });
+    setState(() => yolo.isLoading = false);
 
     if (!isValid) {
       showDialog(
@@ -43,14 +39,23 @@ class _WritingPageState extends ConsumerState<WritingPage> {
           content: Text("(사람 사진을 업로드할 수 없습니다)"),
         ),
       );
-    } else {
-      setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final postSubmission = ref.read(postSubmissionViewModelProvider);
+    final rawUser = ref.watch(userViewModelProvider);
+
+    final user = rawUser ??
+        UserModel(
+          uid: 'test_uid',
+          name: '테스트계정',
+          nickname: '가짜진주',
+          email: 'test@example.com',
+          profileImageUrl: '',
+          bio: '',
+        );
 
     return Scaffold(
       appBar: AppBar(
@@ -170,18 +175,15 @@ class _WritingPageState extends ConsumerState<WritingPage> {
                         content: content,
                         tags: _tags,
                         imageFile: yolo.selectedImage!,
+                        user: user,
                       );
 
                       if (context.mounted) {
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("업로드 완료!")),
-                        );
+                        showCustomSnackBar(context, '업로드 완료!');
                       }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("업로드 실패 😢")),
-                      );
+                      showCustomSnackBar(context, '업로드 실패 😢');
                     }
                   }
                 : null,
