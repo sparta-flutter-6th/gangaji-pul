@@ -6,11 +6,21 @@ class UserRepositoryImpl implements UserRepository {
   final userCollection = FirebaseFirestore.instance.collection('users');
 
   @override
+  Future<bool> userExists(String uid) async {
+    final doc = await userCollection.doc(uid).get();
+    return doc.exists;
+  }
+
+  @override
   Future<void> saveUser(String uid, String email, String name) async {
-    userCollection.doc(uid).set({
+    await userCollection.doc(uid).set({
       'uid': uid,
       'email': email,
       'name': name,
+      'bio': '',
+      'profileImageUrl': '',
+      'likeCount': 0,
+      'postCount': 0,
     }, SetOptions(merge: true));
   }
 

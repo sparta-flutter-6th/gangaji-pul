@@ -10,32 +10,39 @@ final userViewModelProvider = NotifierProvider<UserViewModel, UserModel?>(() {
 });
 
 class UserViewModel extends Notifier<UserModel?> {
-  late final StreamSubscription<User?> _authSubscription;
+  late StreamSubscription<User?> _authSubscription;
   final UserRepositoryImpl userRepositoryImpl = UserRepositoryImpl();
 
   @override
   UserModel? build() {
-    _authSubscription = FirebaseAuth.instance.authStateChanges().listen((
-      user,
-    ) async {
-      if (user == null) {
-        state = null;
-      } else {
-        await userRepositoryImpl.saveUser(
-          user.uid,
-          user.email ?? '',
-          user.displayName ?? '',
-        );
-        final userModel = await userRepositoryImpl.getUser(user.uid);
-        state = userModel;
-      }
-    });
+    _authSubscription = FirebaseAuth.instance.authStateChanges().listen(
+      _handleAuthChange,
+    );
 
     ref.onDispose(() {
       _authSubscription.cancel();
     });
 
     return null;
+  }
+
+  Future<void> _handleAuthChange(User? user) async {
+    if (user == null) {
+      state = null;
+      return;
+    }
+
+    final exists = await userRepositoryImpl.userExists(user.uid);
+    if (!exists) {
+      await userRepositoryImpl.saveUser(
+        user.uid,
+        user.email ?? '',
+        user.displayName ?? '',
+      );
+    }
+
+    final userModel = await userRepositoryImpl.getUser(user.uid);
+    state = userModel;
   }
 
   Future<void> refreshUser() async {
