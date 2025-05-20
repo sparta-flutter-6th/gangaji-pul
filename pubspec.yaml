@@ -27,9 +27,6 @@ dependencies:
       ref: main
   provider: ^6.1.5
 
-
->>>>>>> develop
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
