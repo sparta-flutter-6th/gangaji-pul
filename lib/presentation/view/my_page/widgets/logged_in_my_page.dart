@@ -16,6 +16,7 @@ class LoggedInMyPage extends ConsumerWidget {
     return userAsync.when(
       data: (user) {
         if (user == null) {
+          authService.signOut();
           return const Center(child: Text('사용자 정보를 불러올 수 없습니다.'));
         }
 
