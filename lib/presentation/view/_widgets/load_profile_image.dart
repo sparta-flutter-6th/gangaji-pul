@@ -13,35 +13,6 @@ class LoadProfileImage extends StatelessWidget {
   final UserModel user;
   final double size;
 
-  Future<void> _pickImage(String uid) async {
-    final picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-    );
-    if (pickedFile == null) return;
-
-    final refStorage = FirebaseStorage.instance.ref().child(
-      'userProfileImages/$uid.jpg',
-    );
-    final file = File(pickedFile.path);
-
-    try {
-      log('업로드 시작');
-      await refStorage.putFile(file);
-      log('업로드 완료');
-
-      final downloadUrl = await refStorage.getDownloadURL();
-
-      log('프로필 url : $downloadUrl');
-
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'profileImageUrl': downloadUrl,
-      });
-    } catch (e) {
-      log('이미지 업로드 중 오류 발생: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ClipOval(
@@ -79,5 +50,34 @@ class LoadProfileImage extends StatelessWidget {
         fit: BoxFit.cover,
       ),
     );
+  }
+
+  Future<void> _pickImage(String uid) async {
+    final picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile == null) return;
+
+    final refStorage = FirebaseStorage.instance.ref().child(
+      'userProfileImages/$uid.jpg',
+    );
+    final file = File(pickedFile.path);
+
+    try {
+      log('업로드 시작');
+      await refStorage.putFile(file);
+      log('업로드 완료');
+
+      final downloadUrl = await refStorage.getDownloadURL();
+
+      log('프로필 url : $downloadUrl');
+
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'profileImageUrl': downloadUrl,
+      });
+    } catch (e) {
+      log('이미지 업로드 중 오류 발생: $e');
+    }
   }
 }
