@@ -12,12 +12,14 @@ final userStreamProvider = StreamProvider.autoDispose<UserModel?>((ref) {
   return userDataSource.getUserByUid(uid);
 });
 
-final topUsersByPostCountProvider = StreamProvider.autoDispose<List<UserModel>?>((ref) {
-  final userDataSource = ref.read(userDataSourceProvider);
-  return userDataSource.getTopUsersByPostCount();
-});
+final topUsersByPostCountProvider =
+    StreamProvider.autoDispose<List<UserModel>?>((ref) {
+      final userDataSource = ref.read(userDataSourceProvider);
+      return userDataSource.getTopUsersByPostCount();
+    });
 
-final topUsersByLikeCountProvider = StreamProvider.autoDispose<List<UserModel>?>((ref) {
-  final userDataSource = ref.read(userDataSourceProvider);
-  return userDataSource.getTopUsersByLikeCount();
-});
+final topUsersByLikeCountProvider =
+    StreamProvider.autoDispose<List<UserModel>?>((ref) {
+      final userDataSource = ref.read(userDataSourceProvider);
+      return userDataSource.getTopUsersByLikeCount();
+    });
