@@ -1,33 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gangaji_pul/data/data_source/user_data_source.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/domain/repository/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final userCollection = FirebaseFirestore.instance.collection('users');
+  final UserDataSource dataSource;
+
+  UserRepositoryImpl(this.dataSource);
 
   @override
-  Future<bool> userExists(String uid) async {
-    final doc = await userCollection.doc(uid).get();
-    return doc.exists;
+  Stream<UserModel?> getUserByUid(String uid) {
+    return dataSource.getUserByUid(uid);
   }
 
   @override
-  Future<void> saveUser(String uid, String email, String name) async {
-    await userCollection.doc(uid).set({
-      'uid': uid,
-      'email': email,
-      'name': name,
-      'bio': '',
-      'profileImageUrl': '',
-      'likeCount': 0,
-      'postCount': 0,
-    }, SetOptions(merge: true));
-  }
+  Future<void> createUserDocIfNotExists(User user) async {
+    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final doc = await docRef.get();
 
-  @override
-  Future<UserModel> getUser(String uid) async {
-    final userDoc = await userCollection.doc(uid).get();
-    final userData = userDoc.data();
-    return UserModel.fromJson(userData!);
+    if (!doc.exists) {
+      await docRef.set({
+        'uid': user.uid,
+        'name': user.displayName ?? '',
+        'email': user.email ?? '',
+        'bio': '',
+        'postCount': 0,
+        'likeCount': 0,
+        'nickname': '',
+        'profileImageUrl': '',
+      });
+    }
   }
 }

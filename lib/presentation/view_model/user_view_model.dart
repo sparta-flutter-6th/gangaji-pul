@@ -14,19 +14,3 @@ final userStreamProvider = StreamProvider<UserModel?>((ref) {
   return userDataSource.getUserByUid(uid);
 });
 
-Future<void> createUserDocIfNotExists(User user) async {
-  final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-  final doc = await docRef.get();
-
-  if (!doc.exists) {
-    await docRef.set({
-      'uid': user.uid,
-      'name': user.displayName ?? '',
-      'email': user.email ?? '',
-      'bio': '',
-      'postCount': 0,
-      'likeCount': 0,
-      'nickname': '',
-    });
-  }
-}

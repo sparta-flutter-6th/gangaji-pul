@@ -11,7 +11,7 @@ class LoggedInMyPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(userStreamProvider);
-    final userService = ref.read(userServiceProvider);
+    final authService = ref.read(authServiceProvider);
 
     return userAsync.when(
       data: (user) {
@@ -33,7 +33,7 @@ class LoggedInMyPage extends ConsumerWidget {
               IconButton(
                 onPressed: () {
                   // 임시용 로그아웃
-                  userService.signOut();
+                  authService.signOut();
                 },
                 icon: Icon(Icons.settings, color: Colors.grey[700]),
               ),
@@ -122,7 +122,7 @@ class LoggedInMyPage extends ConsumerWidget {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) {
-        userService.signOut();
+        authService.signOut();
         return Center(child: Text('에러 발생: $error'));
       },
     );
