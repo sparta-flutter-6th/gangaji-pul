@@ -32,4 +32,14 @@ class UserRepositoryImpl implements UserRepository {
       });
     }
   }
+
+  @override
+  Stream<List<UserModel>?> getTopUsersByLikeCount() {
+    return dataSource.getTopUsersByLikeCount();
+  }
+
+  @override
+  Stream<List<UserModel>?> getTopUsersByPostCount() {
+    return dataSource.getTopUsersByPostCount();
+  }
 }
