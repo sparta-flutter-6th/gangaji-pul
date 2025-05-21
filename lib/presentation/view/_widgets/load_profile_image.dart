@@ -58,7 +58,21 @@ class LoadProfileImage extends StatelessWidget {
           }
         },
         errorBuilder: (context, error, stackTrace) {
-          return const Icon(Icons.error); // 에러 시 대체 아이콘
+          return Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.grey, width: 4),
+              color: Color(0XFF332121),
+            ),
+            child: IconButton(
+              onPressed: () {
+                _pickImage(user.uid);
+              },
+              icon: Icon(Icons.camera_alt, size: size / 2, color: Colors.grey),
+            ),
+          );
         },
         width: size,
         height: size,
