@@ -2,13 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
-import 'package:gangaji_pul/presentation/view/bottom_nav_bar.dart';
 import 'package:gangaji_pul/data/dto/post_dto.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sheet.dart';
 
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
-import 'package:gangaji_pul/presentation/view/writing_page.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerStatefulWidget {

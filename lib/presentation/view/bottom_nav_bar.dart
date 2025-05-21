@@ -8,11 +8,12 @@ class BottomNavigationShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String location = GoRouterState.of(context).uri.toString();
-
+    final location = GoRouterState.of(context).uri.toString();
     int currentIndex = 0;
-    if (location.startsWith('/mypage')) {
+    if (location.startsWith('/board')) {
       currentIndex = 1;
+    } else if (location.startsWith('/mypage')) {
+      currentIndex = 2;
     }
 
     return Scaffold(
@@ -20,11 +21,15 @@ class BottomNavigationShell extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
+          currentIndex = index;
           switch (index) {
             case 0:
               context.go('/home');
               break;
             case 1:
+              context.go('/board');
+              break;
+            case 2:
               context.go('/mypage');
               break;
           }
@@ -32,7 +37,11 @@ class BottomNavigationShell extends StatelessWidget {
         backgroundColor: const Color(0xFFB1D182),
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
-        items: const [BottomNavigationBarItem(icon: Icon(Icons.home), label: ''), BottomNavigationBarItem(icon: Icon(Icons.person), label: '')],
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.forum), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+        ],
       ),
     );
   }
