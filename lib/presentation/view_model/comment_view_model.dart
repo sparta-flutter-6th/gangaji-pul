@@ -27,7 +27,6 @@ class CommentListViewModel extends StateNotifier<List<Comment>> {
 
   Future<void> addComment(Comment comment) async {
     await repository.addComment(postId, comment);
-    // reload to ensure new Firestore doc ID is included
     await _loadComments();
   }
 

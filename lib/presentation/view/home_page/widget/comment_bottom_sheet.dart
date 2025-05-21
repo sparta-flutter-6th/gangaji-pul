@@ -221,7 +221,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                 ),
                 const Spacer(),
 
-                // 메뉴: 댓글은 답글+삭제, 답글은 삭제만
+                // 아이콘: 댓글은 답글+삭제, 답글은 삭제만
                 Row(
                   children: [
                     if (!isReply)
