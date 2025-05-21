@@ -3,7 +3,7 @@ import 'package:gangaji_pul/data/providers/user_providers.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 
-final userStreamProvider = StreamProvider<UserModel?>((ref) {
+final userStreamProvider = StreamProvider.autoDispose<UserModel?>((ref) {
   final authStateAsync = ref.watch(authStateProvider);
 
   final uid = authStateAsync.asData?.value?.uid;
@@ -12,12 +12,12 @@ final userStreamProvider = StreamProvider<UserModel?>((ref) {
   return userDataSource.getUserByUid(uid);
 });
 
-final topUsersByPostCountProvider = StreamProvider<List<UserModel>?>((ref) {
+final topUsersByPostCountProvider = StreamProvider.autoDispose<List<UserModel>?>((ref) {
   final userDataSource = ref.read(userDataSourceProvider);
   return userDataSource.getTopUsersByPostCount();
 });
 
-final topUsersByLikeCountProvider = StreamProvider<List<UserModel>?>((ref) {
+final topUsersByLikeCountProvider = StreamProvider.autoDispose<List<UserModel>?>((ref) {
   final userDataSource = ref.read(userDataSourceProvider);
   return userDataSource.getTopUsersByLikeCount();
 });
