@@ -1,17 +1,16 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gangaji_pul/data/data_source/user_remote_data_source.dart';
+import 'package:gangaji_pul/data/data_source/user_data_source.dart';
 import 'package:gangaji_pul/data/providers/post_repository_provider.dart';
+import 'package:gangaji_pul/data/providers/user_providers.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/domain/repository/post_repository.dart';
 import 'package:uuid/uuid.dart';
 
 final postSubmissionViewModelProvider = Provider((ref) {
   final postRepository = ref.read(postRepositoryProvider);
-  final userRemoteDataSource = UserRemoteDataSource(FirebaseFirestore.instance);
+  final userRemoteDataSource = ref.read(userDataSourceProvider);
   return PostSubmissionViewModel(
     repository: postRepository,
     userRemoteDataSource: userRemoteDataSource,
@@ -20,7 +19,7 @@ final postSubmissionViewModelProvider = Provider((ref) {
 
 class PostSubmissionViewModel {
   final PostRepository repository;
-  final UserRemoteDataSource userRemoteDataSource;
+  final UserDataSource userRemoteDataSource;
 
   PostSubmissionViewModel({
     required this.repository,
