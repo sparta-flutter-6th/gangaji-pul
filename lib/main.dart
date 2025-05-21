@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/firebase_options.dart';
-import 'package:gangaji_pul/presentation/view/splash_page/splash.dart';
+import 'package:gangaji_pul/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +25,6 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(home: SplashPage());
+    return MaterialApp.router(routerConfig: router);
   }
 }

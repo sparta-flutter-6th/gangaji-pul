@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gangaji_pul/presentation/view/home_page/home_page.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,10 +15,9 @@ class _SplashPageState extends State<SplashPage> {
 
     // 2초 후 자동으로 HomePage로 이동
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
-      );
+      if (mounted) {
+        context.go('/home');
+      }
     });
   }
 
@@ -45,11 +44,7 @@ class _SplashPageState extends State<SplashPage> {
                   ),
                 ),
 
-                Image.asset(
-                  'assets/images/gaepull.png',
-                  width: 180,
-                  height: 180,
-                ),
+                Image.asset('assets/images/gaepull.png', width: 180, height: 180),
               ],
             ),
           ),
