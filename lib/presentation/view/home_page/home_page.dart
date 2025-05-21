@@ -24,11 +24,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final postViewmodel = ref.read(postViewModelProvider.notifier);
-      await postViewmodel.fetchPost();
-      await postViewmodel.fetchPost();
-    });
 
     _pageController.addListener(() {
       final next = _pageController.page?.round() ?? 0;
@@ -39,14 +34,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           ref.read(postViewModelProvider.notifier).fetchPost();
         }
       }
-    });
-  }
-
-  Future<void> fetchPosts() async {
-    final snapshot = await FirebaseFirestore.instance.collection('posts').orderBy('createdAt', descending: true).get();
-
-    setState(() {
-      posts = snapshot.docs.map((doc) => PostDto.fromFirebase(doc.data(), doc.id)).toList();
     });
   }
 
