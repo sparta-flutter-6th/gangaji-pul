@@ -5,6 +5,8 @@ class UserModel {
   String profileImageUrl;
   String email;
   String bio;
+  int likeCount;
+  int postCount;
 
   UserModel({
     required this.uid,
@@ -13,6 +15,8 @@ class UserModel {
     required this.profileImageUrl,
     required this.email,
     required this.bio,
+    required this.likeCount,
+    required this.postCount,
   });
 
   UserModel copyWith({
@@ -22,6 +26,8 @@ class UserModel {
     String? email,
     String? profileImageUrl,
     String? bio,
+    int? likeCount,
+    int? postCount,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -30,6 +36,8 @@ class UserModel {
       email: email ?? this.email,
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       bio: bio ?? this.bio,
+      likeCount: likeCount ?? this.likeCount,
+      postCount: postCount ?? this.postCount,
     );
   }
 
@@ -41,16 +49,7 @@ class UserModel {
         profileImageUrl: map['profile_image_url'] ?? '',
         email: map['email'] ?? '',
         bio: map['bio'] ?? '',
+        likeCount: map['likeCount'] ?? 0,
+        postCount: map['postCount'] ?? 0,
       );
-      
-  Map<String, dynamic> toJson() {
-    return {
-      'uid': uid,
-      'name': name,
-      'nickname': nickname,
-      'profile_image_url': profileImageUrl,
-      'email': email,
-      'bio': bio,
-    };
-  }
 }

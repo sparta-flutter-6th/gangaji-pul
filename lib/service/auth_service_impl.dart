@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 import 'package:gangaji_pul/service/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -22,8 +23,7 @@ class AuthServiceImpl implements AuthService {
         return null;
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleSignInAccount.authentication;
+      final googleAuth = await googleSignInAccount.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -33,6 +33,12 @@ class AuthServiceImpl implements AuthService {
       final userCredential = await _firebaseAuth.signInWithCredential(
         credential,
       );
+      final user = userCredential.user;
+
+      if (user != null) {
+        await createUserDocIfNotExists(user);
+      }
+      
       return userCredential;
     } catch (e) {
       log('구글 로그인 실패: $e');

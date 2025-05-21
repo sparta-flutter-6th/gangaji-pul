@@ -1,46 +1,35 @@
-import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
-import 'package:gangaji_pul/data/repository/user_repository_impl.dart';
+import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 
-final userViewModelProvider = NotifierProvider<UserViewModel, UserModel?>(() {
-  return UserViewModel();
+final userStreamProvider = StreamProvider<UserModel?>((ref) {
+  final authStateAsync = ref.watch(authStateProvider);
+
+  final uid = authStateAsync.asData?.value?.uid;
+  if (uid == null) return Stream.value(null);
+
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .snapshots()
+      .map((doc) => UserModel.fromJson(doc.data()!));
 });
 
-class UserViewModel extends Notifier<UserModel?> {
-  late final StreamSubscription<User?> _authSubscription;
-  final UserRepositoryImpl userRepositoryImpl = UserRepositoryImpl();
+Future<void> createUserDocIfNotExists(User user) async {
+  final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+  final doc = await docRef.get();
 
-  @override
-  UserModel? build() {
-    _authSubscription = FirebaseAuth.instance.authStateChanges().listen((
-      user,
-    ) async {
-      if (user == null) {
-        state = null;
-      } else {
-        await userRepositoryImpl.saveUser(
-          user.uid,
-          user.email ?? '',
-          user.displayName ?? '',
-        );
-        final userModel = await userRepositoryImpl.getUser(user.uid);
-        state = userModel;
-      }
+  if (!doc.exists) {
+    await docRef.set({
+      'uid': user.uid,
+      'name': user.displayName ?? '',
+      'email': user.email ?? '',
+      'bio': '',
+      'postCount': 0,
+      'likeCount': 0,
+      'nickname': '',
     });
-
-    ref.onDispose(() {
-      _authSubscription.cancel();
-    });
-
-    return null;
-  }
-
-  Future<void> refreshUser() async {
-    if (state == null) return;
-    final refreshedUser = await userRepositoryImpl.getUser(state!.uid);
-    state = refreshedUser;
   }
 }

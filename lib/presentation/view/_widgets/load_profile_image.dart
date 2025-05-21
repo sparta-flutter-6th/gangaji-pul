@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class LoadProfileImage extends ConsumerWidget {
@@ -38,9 +37,6 @@ class LoadProfileImage extends ConsumerWidget {
       await FirebaseFirestore.instance.collection('users').doc(uid).update({
         'profileImageUrl': downloadUrl,
       });
-
-      // 상태 갱신
-      await ref.read(userViewModelProvider.notifier).refreshUser();
     } catch (e) {
       log('이미지 업로드 중 오류 발생: $e');
     }

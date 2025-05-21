@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
@@ -44,7 +46,7 @@ class _WritingPageState extends ConsumerState<WritingPage> {
   @override
   Widget build(BuildContext context) {
     final postSubmission = ref.read(postSubmissionViewModelProvider);
-    final rawUser = ref.watch(userViewModelProvider);
+    final rawUser = ref.watch(userStreamProvider).asData?.value;
 
     final user = rawUser ??
         UserModel(
@@ -54,6 +56,8 @@ class _WritingPageState extends ConsumerState<WritingPage> {
           email: 'test@example.com',
           profileImageUrl: '',
           bio: '',
+          likeCount: 0,
+          postCount: 0,
         );
 
     return Scaffold(
