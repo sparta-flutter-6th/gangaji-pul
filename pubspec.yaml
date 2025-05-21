@@ -26,6 +26,9 @@ dependencies:
       url: https://github.com/fhelper/flutter-yolo-helper.git
       ref: main
   provider: ^6.1.5
+  firebase_storage: ^12.4.5
+  uuid: ^4.5.1
+
 
 dev_dependencies:
   flutter_test:
@@ -38,5 +41,4 @@ flutter:
   assets:
     - assets/models/yolov8n.tflite
     - assets/models/labels.txt
-    - assets/image/
     - assets/images/

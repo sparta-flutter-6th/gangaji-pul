@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entity/comment_entity.dart';
 
 class CommentDto {
-  final String userId;
-  final String userName;
-  final String text;
-  final DateTime timestamp;
-  final String? parentId;
+  final String userId; // Firebase 사용자 UID
+  final String userName; // 사용자 이름
+  final String text; // 댓글 내용
+  final DateTime timestamp; // 작성 시간
+  final String? parentId; // 답글이면 상위 댓글 ID
 
   CommentDto({
     required this.userId,

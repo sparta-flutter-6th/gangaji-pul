@@ -31,11 +31,16 @@ class UserViewModel extends Notifier<UserModel?> {
       }
     });
 
-    // dispose될 때 stream 정리
     ref.onDispose(() {
       _authSubscription.cancel();
     });
 
     return null;
+  }
+
+  Future<void> refreshUser() async {
+    if (state == null) return;
+    final refreshedUser = await userRepositoryImpl.getUser(state!.uid);
+    state = refreshedUser;
   }
 }

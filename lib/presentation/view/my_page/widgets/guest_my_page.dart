@@ -17,7 +17,7 @@ class GuestMyPage extends StatelessWidget {
           children: [
             Transform.scale(
               scale: 0.7,
-              child: Image.asset('assets/image/dog.png'),
+              child: Image.asset('assets/images/dog.png'),
             ),
             const Text(
               '반려가족들과 소통하고, 우리만의 공간을 만들어보세요',

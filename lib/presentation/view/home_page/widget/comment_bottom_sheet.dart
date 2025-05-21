@@ -16,7 +16,7 @@ class CommentBottomSheet extends ConsumerStatefulWidget {
 
 class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
   final TextEditingController _controller = TextEditingController();
-  Comment? replyingTo;
+  Comment? replyingTo; // 현재 답글 대상 댓글
 
   @override
   void dispose() {
@@ -24,6 +24,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
     super.dispose();
   }
 
+  // 댓글 등록
   void _submit() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
@@ -36,17 +37,18 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
         userName: user.displayName ?? '익명',
         text: text,
         timestamp: DateTime.now(),
-        parentId: replyingTo?.id,
+        parentId: replyingTo?.id, // 답글이면 parentId 포함
       );
 
       await ref
           .read(commentListProvider(widget.postId).notifier)
           .addComment(comment);
       _controller.clear();
-      setState(() => replyingTo = null);
+      setState(() => replyingTo = null); // 답글 초기화
     }
   }
 
+  // 댓글 삭제
   void _deleteComment(String commentId) async {
     await ref
         .read(commentListProvider(widget.postId).notifier)
@@ -59,7 +61,9 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     final currentUser = FirebaseAuth.instance.currentUser;
 
+    // 댓글과 답글 분리
     final parentComments = comments.where((c) => c.parentId == null).toList();
+    // 답글을 parentId 기준으로 묶기
     final repliesMap = <String, List<Comment>>{};
     for (var comment in comments) {
       if (comment.parentId != null) {
@@ -78,15 +82,16 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // 총 댓글 수
             Text(
               "댓글 (${comments.length})",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
 
-            /// 🔽 댓글 영역 높이 고정 (350으로 줄임)
+            // 댓글과 답글 목록
             SizedBox(
-              height: 350,
+              height: 450, // 댓글 영역 높이
               child: ListView.builder(
                 itemCount: parentComments.length,
                 itemBuilder: (context, index) {
@@ -95,14 +100,16 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // 일반 댓글
                       _buildCommentTile(
                         parent,
                         currentUser,
                         isReplyTarget,
                         isReply: false,
                       ),
+                      // 해당 댓글의 답글 리스트
                       if (repliesMap[parent.id] != null)
-                        ...repliesMap[parent.id!]!.map(
+                        ...repliesMap[parent.id]!.map(
                           (reply) => Padding(
                             padding: const EdgeInsets.only(left: 24),
                             child: Row(
@@ -110,7 +117,10 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                               children: [
                                 const Text(
                                   "ㄴ ",
-                                  style: TextStyle(color: Colors.grey),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                                 Expanded(
                                   child: _buildCommentTile(
@@ -124,7 +134,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                             ),
                           ),
                         ),
-                      const Divider(),
+                      const Divider(), // 댓글 구분선
                     ],
                   );
                 },
@@ -132,6 +142,8 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
             ),
 
             const SizedBox(height: 8),
+
+            // 답글 작성 중 표시
             if (replyingTo != null)
               Row(
                 children: [
@@ -149,6 +161,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                 ],
               ),
 
+            // 댓글 입력창
             TextField(
               controller: _controller,
               minLines: 1,
@@ -160,6 +173,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
             ),
             const SizedBox(height: 12),
 
+            // 작성 버튼
             ElevatedButton(
               onPressed: _submit,
               style: ElevatedButton.styleFrom(
@@ -173,19 +187,25 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
     );
   }
 
+  /// 댓글 구성
   Widget _buildCommentTile(
     Comment comment,
     User? currentUser,
     bool isReplyTarget, {
     required bool isReply,
   }) {
+    final backgroundColor =
+        isReply
+            ? const Color(0xFFF4F1E9) // 답글 배경색
+            : const Color(0xFFF0F0F0); // 댓글 배경색
+
     return Container(
       decoration: BoxDecoration(
-        color: isReplyTarget ? const Color(0xFFE6EEDD) : null,
+        color: isReplyTarget ? const Color(0xFFE6EEDD) : backgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      margin: const EdgeInsets.symmetric(vertical: 2),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: ListTile(
         dense: true,
         contentPadding: EdgeInsets.zero,
@@ -200,13 +220,14 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
             const SizedBox(height: 4),
             Row(
               children: [
+                // 작성 시간
                 Text(
                   DateFormat('HH:mm').format(comment.timestamp),
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const Spacer(),
 
-                /// 메뉴: 일반 댓글 → 답글 + 삭제 / 답글 → 삭제만
+                // 메뉴: 댓글은 답글+삭제, 답글은 삭제만
                 Row(
                   children: [
                     if (!isReply)
