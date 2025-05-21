@@ -76,7 +76,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
-          color: Color(0xFFF4F1E9),
+          color: Color(0xFFF0F0F0),
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -161,25 +161,19 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
                 ],
               ),
 
-            // 댓글 입력창
+            // 댓글 입력창 + 보내기 아이콘
             TextField(
               controller: _controller,
               minLines: 1,
               maxLines: 5,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: "댓글을 입력하세요",
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.send, color: Color(0xFF688F4E)),
+                  onPressed: _submit,
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-
-            // 작성 버튼
-            ElevatedButton(
-              onPressed: _submit,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF688F4E),
-              ),
-              child: const Text("작성하기", style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
