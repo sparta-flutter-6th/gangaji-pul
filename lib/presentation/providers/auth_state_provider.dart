@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gangaji_pul/data/providers/user_data_source_provider.dart';
+import 'package:gangaji_pul/data/providers/user_providers.dart';
 import 'package:gangaji_pul/service/auth_service.dart';
 import 'package:gangaji_pul/service/auth_service_impl.dart';
 import 'package:google_sign_in/google_sign_in.dart';

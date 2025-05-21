@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/data/data_source/user_data_source.dart';
 import 'package:gangaji_pul/data/providers/post_repository_provider.dart';
-import 'package:gangaji_pul/data/providers/user_data_source_provider.dart';
+import 'package:gangaji_pul/data/providers/user_providers.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/domain/repository/post_repository.dart';
 import 'package:uuid/uuid.dart';
