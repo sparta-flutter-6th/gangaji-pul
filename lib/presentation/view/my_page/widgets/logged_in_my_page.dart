@@ -47,7 +47,7 @@ class LoggedInMyPage extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    LoadProfileImage(user: user, size: 100),
+                    LoadProfileImage(user: user, size: 120),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20),
