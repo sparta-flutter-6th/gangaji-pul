@@ -11,9 +11,6 @@ class UserRepositoryImpl implements UserRepository {
       'uid': uid,
       'email': email,
       'name': name,
-      'nickname': '',
-      'profileImageUrl': '',
-      'bio': '',
     }, SetOptions(merge: true));
   }
 
@@ -23,5 +20,4 @@ class UserRepositoryImpl implements UserRepository {
     final userData = userDoc.data();
     return UserModel.fromJson(userData!);
   }
-
 }

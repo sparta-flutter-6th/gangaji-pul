@@ -15,6 +15,24 @@ class UserModel {
     required this.bio,
   });
 
+  UserModel copyWith({
+    String? uid,
+    String? name,
+    String? nickname,
+    String? email,
+    String? profileImageUrl,
+    String? bio,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      name: name ?? this.name,
+      nickname: nickname ?? this.nickname,
+      email: email ?? this.email,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+      bio: bio ?? this.bio,
+    );
+  }
+
   UserModel.fromJson(Map<String, dynamic> map)
     : this(
         uid: map['uid'] ?? '',
@@ -24,4 +42,15 @@ class UserModel {
         email: map['email'] ?? '',
         bio: map['bio'] ?? '',
       );
+      
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': uid,
+      'name': name,
+      'nickname': nickname,
+      'profile_image_url': profileImageUrl,
+      'email': email,
+      'bio': bio,
+    };
+  }
 }

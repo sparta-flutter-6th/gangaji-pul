@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gangaji_pul/service/yolo/yolo_detection.dart';
 
-class WritingViewModel {
+class YoloViewModel {
   final YoloDetection aiService = YoloDetection();
   final TextEditingController tagController = TextEditingController();
   final TextEditingController contentController = TextEditingController();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
+import 'package:gangaji_pul/presentation/view/_widgets/load_profile_image.dart';
 import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 
 class LoggedInMyPage extends ConsumerWidget {
@@ -24,18 +25,7 @@ class LoggedInMyPage extends ConsumerWidget {
           ),
           Row(
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Color(0XFF7C5C42),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Icon(Icons.camera_alt, size: 50, color: Colors.grey),
-                ),
-              ),
-
+              LoadProfileImage(uid: user!.uid, size: 100),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20),
@@ -46,7 +36,7 @@ class LoggedInMyPage extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            user!.name,
+                            user.name,
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -81,7 +71,7 @@ class LoggedInMyPage extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             height: 300,
-            child: Image.asset('assets/image/grass.png', fit: BoxFit.cover),
+            child: Image.asset('assets/images/grass.png', fit: BoxFit.cover),
           ),
         ],
       ),

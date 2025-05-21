@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gangaji_pul/domain/entity/post_entity.dart';
 
 class PostDto {
   final String postId; // 고유 식별자
@@ -58,5 +59,21 @@ class PostDto {
       'likeCount': likeCount,
       'commentCount': commentCount,
     };
+  }
+
+  Post toEntity() {
+    return Post(
+      postId: postId,
+      content: content,
+      tags: tags,
+      imageUrl: imageUrl,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      userId: userId,
+      userName: userName,
+      userProfileImage: userProfileImage,
+      likeCount: likeCount,
+      commentCount: commentCount,
+    );
   }
 }
