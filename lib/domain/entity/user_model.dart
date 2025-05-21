@@ -46,7 +46,7 @@ class UserModel {
         uid: map['uid'] ?? '',
         name: map['name'] ?? '',
         nickname: map['nickname'] ?? '',
-        profileImageUrl: map['profile_image_url'] ?? '',
+        profileImageUrl: map['profileImageUrl'] ?? '',
         email: map['email'] ?? '',
         bio: map['bio'] ?? '',
         likeCount: map['likeCount'] ?? 0,

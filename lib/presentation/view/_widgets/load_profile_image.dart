@@ -4,16 +4,16 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:image_picker/image_picker.dart';
 
-class LoadProfileImage extends ConsumerWidget {
-  const LoadProfileImage({super.key, required this.uid, required this.size});
+class LoadProfileImage extends StatelessWidget {
+  const LoadProfileImage({super.key, required this.user, required this.size});
 
-  final String uid;
+  final UserModel user;
   final double size;
 
-  Future<void> _pickImage(String uid, WidgetRef ref) async {
+  Future<void> _pickImage(String uid) async {
     final picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
@@ -43,73 +43,27 @@ class LoadProfileImage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return StreamBuilder<DocumentSnapshot>(
-      stream:
-          FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _loadingWidget();
-        }
-
-        if (snapshot.hasError) {
-          log('Stream error: ${snapshot.error}');
-          return _defaultImage(ref);
-        }
-
-        if (!snapshot.hasData || !snapshot.data!.exists) {
-          return _defaultImage(ref);
-        }
-
-        final data = snapshot.data!.data() as Map<String, dynamic>;
-        final imageUrl = data['profileImageUrl'] as String?;
-
-        if (imageUrl == null || imageUrl.isEmpty) {
-          return _defaultImage(ref);
-        }
-
-        return ClipOval(
-          child: Image.network(
-            imageUrl,
-            width: size,
-            height: size,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return _loadingWidget();
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return _defaultImage(ref);
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _defaultImage(WidgetRef ref) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 2),
-        borderRadius: BorderRadius.circular(100),
-        color: Color(0XFF332121),
-      ),
-      child: IconButton(
-        onPressed: () async {
-          await _pickImage(uid, ref);
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: Image.network(
+        user.profileImageUrl,
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (wasSynchronouslyLoaded || frame != null) {
+            return child;
+          } else {
+            return SizedBox.square(
+              dimension: size,
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
         },
-        icon: Icon(Icons.camera_alt, size: 50, color: Colors.grey),
+        errorBuilder: (context, error, stackTrace) {
+          return const Icon(Icons.error); // 에러 시 대체 아이콘
+        },
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
       ),
-    );
-  }
-
-  Widget _loadingWidget() {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: const CircularProgressIndicator(),
     );
   }
 }
