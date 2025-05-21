@@ -91,7 +91,7 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
 
             // 댓글과 답글 목록
             SizedBox(
-              height: 450, // 댓글 영역 높이
+              height: 600, // 댓글 영역 높이
               child: ListView.builder(
                 itemCount: parentComments.length,
                 itemBuilder: (context, index) {
