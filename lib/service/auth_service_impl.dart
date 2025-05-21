@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
+import 'package:gangaji_pul/domain/repository/user_repository.dart';
 import 'package:gangaji_pul/service/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -9,10 +9,15 @@ class AuthServiceImpl implements AuthService {
   AuthServiceImpl({
     required GoogleSignIn googleSignIn,
     required FirebaseAuth firebaseAuth,
+    required UserRepository userRepository,
   }) : _googleSignIn = googleSignIn,
-       _firebaseAuth = firebaseAuth;
+       _firebaseAuth = firebaseAuth,
+       _userRepository = userRepository;
+
   final GoogleSignIn _googleSignIn;
   final FirebaseAuth _firebaseAuth;
+  final UserRepository _userRepository;
+
   @override
   Future<UserCredential?> signInWithGoogle() async {
     try {
@@ -36,9 +41,9 @@ class AuthServiceImpl implements AuthService {
       final user = userCredential.user;
 
       if (user != null) {
-        await createUserDocIfNotExists(user);
+        await _userRepository.createUserDocIfNotExists(user);
       }
-      
+
       return userCredential;
     } catch (e) {
       log('구글 로그인 실패: $e');
