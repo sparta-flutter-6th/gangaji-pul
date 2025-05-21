@@ -11,33 +11,20 @@ import 'package:uuid/uuid.dart';
 final postSubmissionViewModelProvider = Provider((ref) {
   final postRepository = ref.read(postRepositoryProvider);
   final userRemoteDataSource = ref.read(userDataSourceProvider);
-  return PostSubmissionViewModel(
-    repository: postRepository,
-    userRemoteDataSource: userRemoteDataSource,
-  );
+  return PostSubmissionViewModel(repository: postRepository, userRemoteDataSource: userRemoteDataSource);
 });
 
 class PostSubmissionViewModel {
   final PostRepository repository;
   final UserDataSource userRemoteDataSource;
 
-  PostSubmissionViewModel({
-    required this.repository,
-    required this.userRemoteDataSource,
-  });
+  PostSubmissionViewModel({required this.repository, required this.userRemoteDataSource});
 
-  Future<void> createPost({
-    required String content,
-    required List<String> tags,
-    required File imageFile,
-    required UserModel user,
-  }) async {
+  Future<void> createPost({required String content, required List<String> tags, required File imageFile, required UserModel user}) async {
     try {
       // 1. 유저 정보 바로 사용
       final fileName = const Uuid().v4();
-      final ref = FirebaseStorage.instance.ref().child(
-        "post_images/$fileName.jpg",
-      );
+      final ref = FirebaseStorage.instance.ref().child("post_images/$fileName.jpg");
       final uploadTask = await ref.putFile(imageFile);
       final imageUrl = await uploadTask.ref.getDownloadURL();
 
