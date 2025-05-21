@@ -24,9 +24,12 @@ class _RankingBoardState extends ConsumerState<RankingBoard> {
 
     final isLoading = chatRankAsync.isLoading || likeRankAsync.isLoading || postRankAsync.isLoading;
     final isError = chatRankAsync.hasError || likeRankAsync.hasError || postRankAsync.hasError;
-
     if (isError) {
-      return const Center(child: Text("랭킹 정보를 불러오는 중 오류가 발생했습니다."));
+      return _buildLoadingOrError("랭킹 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+
+    if (isLoading) {
+      return _buildLoading();
     }
 
     final chatRank = chatRankAsync.asData!.value;
@@ -55,7 +58,7 @@ class _RankingBoardState extends ConsumerState<RankingBoard> {
                   child: Container(
                     decoration: BoxDecoration(color: normalBrownColor, borderRadius: BorderRadius.circular(16)),
                     padding: const EdgeInsets.all(16),
-                    child: isLoading ? const Center(child: CircularProgressIndicator()) : RankingProfile(entry: entry),
+                    child: RankingProfile(entry: entry),
                   ),
                 );
               }).toList(),
@@ -76,6 +79,30 @@ class _RankingBoardState extends ConsumerState<RankingBoard> {
           count: 3,
           effect: JumpingDotEffect(dotHeight: 6, dotWidth: 6, activeDotColor: Colors.white, dotColor: Colors.white.withAlpha(150)),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingOrError(String message) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 270, // 높이 고정
+        decoration: BoxDecoration(color: normalBrownColor, borderRadius: BorderRadius.circular(16)),
+        padding: const EdgeInsets.all(16),
+        child: Center(child: Text(message, style: const TextStyle(color: Colors.white))),
+      ),
+    );
+  }
+
+  Widget _buildLoading() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 270, // 높이 고정
+        decoration: BoxDecoration(color: normalBrownColor, borderRadius: BorderRadius.circular(16)),
+        padding: const EdgeInsets.all(16),
+        child: const Center(child: CircularProgressIndicator(color: Colors.white)),
       ),
     );
   }
