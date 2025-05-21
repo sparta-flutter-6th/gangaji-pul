@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/chat_view_model_provider.dart';
@@ -22,9 +23,9 @@ class _ChatInputState extends ConsumerState<ChatInput> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authStateProvider);
-    final user = authState.asData?.value;
-    if (user == null) {
+    final uid = FirebaseAuth.instance.currentUser;
+
+    if (uid == null) {
       return SizedBox();
     }
 
