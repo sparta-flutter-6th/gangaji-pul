@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gangaji_pul/const/color_const.dart';
+import 'package:gangaji_pul/presentation/view/board_page/widget/ad_banner_widget.dart';
 import 'package:gangaji_pul/presentation/view/board_page/widget/chat_list.dart';
 import 'package:gangaji_pul/presentation/view/board_page/widget/ranking_board.dart';
 
@@ -10,8 +11,20 @@ class BoardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(backgroundColor: accentGreenColor, title: const Text('커뮤니티', style: TextStyle(color: Colors.white))),
-      body: Column(children: [RankingBoard(), _buildNotice(), const SizedBox(height: 12), ChatList(), _buildCommentInput()]),
+      appBar: AppBar(
+        backgroundColor: accentGreenColor,
+        title: const Text('커뮤니티', style: TextStyle(color: Colors.white)),
+      ),
+      body: Column(
+        children: [
+          RankingBoard(),
+          _buildNotice(),
+          AdBannerWidget(), //광고
+          const SizedBox(height: 12),
+          ChatList(),
+          _buildCommentInput(),
+        ],
+      ),
     );
   }
 
@@ -23,8 +36,14 @@ class BoardPage extends StatelessWidget {
           hintText: "대화를 시작해보세요",
           fillColor: Colors.white,
           filled: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
@@ -33,9 +52,15 @@ class BoardPage extends StatelessWidget {
   Widget _buildNotice() {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: const Color.fromARGB(255, 226, 227, 228)),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 226, 227, 228),
+      ),
       child: const Row(
-        children: [Icon(Icons.warning_amber_rounded, color: Colors.orange), SizedBox(width: 8), Expanded(child: Text("글 작성시 커뮤니티 운영정책을 지켜주세요!"))],
+        children: [
+          Icon(Icons.warning_amber_rounded, color: Colors.orange),
+          SizedBox(width: 8),
+          Expanded(child: Text("글 작성시 커뮤니티 운영정책을 지켜주세요!")),
+        ],
       ),
     );
   }
