@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gangaji_pul/data/providers/chat_repository_provider.dart';
+import 'package:gangaji_pul/data/providers/user_providers.dart';
 import 'package:gangaji_pul/domain/entity/chat_entity.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/domain/repository/user_repository.dart';
-import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 
 import '../../domain/repository/chat_repository.dart';

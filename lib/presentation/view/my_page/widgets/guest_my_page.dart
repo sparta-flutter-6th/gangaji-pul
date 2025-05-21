@@ -30,9 +30,9 @@ class GuestMyPage extends StatelessWidget {
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
                   return ElevatedButton(
                     onPressed: () async {
-                      final userService = ref.read(userServiceProvider);
+                      final authService = ref.read(authServiceProvider);
                       final userCredential =
-                          await userService.signInWithGoogle();
+                          await authService.signInWithGoogle();
 
                       if (userCredential != null) {
                         log("로그인 성공: ${userCredential.user?.displayName}");

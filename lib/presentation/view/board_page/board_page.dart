@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gangaji_pul/const/color_const.dart';
+import 'package:gangaji_pul/presentation/view/board_page/widget/ad_banner_widget.dart';
 import 'package:gangaji_pul/presentation/view/board_page/widget/chat_input.dart';
 import 'package:gangaji_pul/presentation/view/board_page/widget/chat_list.dart';
 import 'package:gangaji_pul/presentation/view/board_page/widget/ranking_board.dart';
@@ -12,7 +13,16 @@ class BoardPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(backgroundColor: accentGreenColor, title: const Text('커뮤니티', style: TextStyle(color: Colors.white))),
-      body: Column(children: [RankingBoard(), _buildNotice(), const SizedBox(height: 12), ChatList(), ChatInput()]),
+      body: Column(
+        children: [
+          RankingBoard(),
+          _buildNotice(),
+          AdBannerWidget(), //광고
+          const SizedBox(height: 12),
+          ChatList(),
+          ChatInput(),
+        ],
+      ),
     );
   }
 
