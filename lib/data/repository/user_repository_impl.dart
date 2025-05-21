@@ -30,4 +30,9 @@ class UserRepositoryImpl implements UserRepository {
     final userData = userDoc.data();
     return UserModel.fromJson(userData!);
   }
+
+  @override
+  DocumentReference<Object?> getUserReference(String uid) {
+    return userCollection.doc(uid);
+  }
 }

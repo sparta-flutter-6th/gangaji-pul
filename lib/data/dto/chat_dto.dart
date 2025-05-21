@@ -13,6 +13,6 @@ class ChatDto {
   }
 
   Map<String, dynamic> toMap() {
-    return {'message': message, 'createdAt': Timestamp.fromDate(createdAt), 'sender': user};
+    return {'message': message, 'createdAt': Timestamp.fromDate(createdAt), 'user': user};
   }
 }

@@ -7,6 +7,7 @@ import 'package:gangaji_pul/domain/entity/chat_entity.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/domain/repository/user_repository.dart';
 import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
+import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 
 import '../../domain/repository/chat_repository.dart';
 
@@ -26,10 +27,11 @@ class ChatViewModel extends StreamNotifier<List<Chat>> {
     });
   }
 
-  Future<void> sendChat(String message, DocumentReference userRef) async {
+  Future<void> sendChat(String message) async {
+    final uid = ref.read(userStreamProvider).asData!.value!.uid;
+    final userRef = _userRepository.getUserReference(uid);
     final chat = Chat(message: message, createdAt: DateTime.now(), user: userRef);
     await _chatRepository.sendChat(chat);
-    // Stream이 자동으로 갱신되므로 추가 작업 불필요
   }
 
   Future<void> _cacheUsers(List<Chat> chats) async {
@@ -40,14 +42,5 @@ class ChatViewModel extends StreamNotifier<List<Chat>> {
         userCache[id] = user;
       }
     }
-  }
-
-  Future<UserModel> getUser(String uid) async {
-    if (userCache.containsKey(uid)) {
-      return userCache[uid]!;
-    }
-    final user = await _userRepository.getUser(uid);
-    userCache[uid] = user;
-    return user;
   }
 }
