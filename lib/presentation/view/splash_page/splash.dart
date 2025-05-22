@@ -53,11 +53,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                   ),
                 ),
 
-                Image.asset(
-                  'assets/images/gaepull.png',
-                  width: 180,
-                  height: 180,
-                ),
+                Image.asset('assets/images/gaepull.gif', width: 180, height: 180),
               ],
             ),
           ),
