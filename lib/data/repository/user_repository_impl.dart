@@ -39,16 +39,6 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<List<UserModel>?> getTopUsersByLikeCount() {
-    return dataSource.getTopUsersByLikeCount();
-  }
-
-  @override
-  Stream<List<UserModel>?> getTopUsersByPostCount() {
-    return dataSource.getTopUsersByPostCount();
-  }
-
-  @override
   Future<UserModel> getUser(String uid) async {
     final userDoc = await getUserReference(uid).get();
     final userData = userDoc.data();

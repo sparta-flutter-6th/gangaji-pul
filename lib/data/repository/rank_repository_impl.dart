@@ -1,6 +1,5 @@
 import 'package:gangaji_pul/data/data_source/rank_data_source.dart';
 import 'package:gangaji_pul/domain/entity/rank_entity.dart';
-import 'package:gangaji_pul/domain/entity/user_model.dart';
 import 'package:gangaji_pul/domain/repository/rank_repository.dart';
 
 class RankRepositoryImpl implements RankRepository {
@@ -10,12 +9,10 @@ class RankRepositoryImpl implements RankRepository {
 
   @override
   Stream<List<RankEntity>?> getChatRank() {
-    return _dataSource.getChatRank().map((rawList) {
-      if (rawList == null) return null;
-      return rawList.map((map) {
-        final user = map.keys.first;
-        final value = map.values.first;
-        return RankEntity(user: user, value: value);
+    return _dataSource.getChatRank().map((userList) {
+      if (userList == null) return null;
+      return userList.map((user) {
+        return RankEntity(user: user, value: user.chatCount);
       }).toList();
     });
   }

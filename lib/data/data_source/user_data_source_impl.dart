@@ -24,26 +24,4 @@ class UserDataSourceImpl implements UserDataSource {
       );
     });
   }
-
-  @override
-  Stream<List<UserModel>?> getTopUsersByLikeCount() {
-    return _firestore.collection('topUsers').doc('topUsersByPostCount').snapshots().map((doc) {
-      final data = doc.data();
-      if (data == null || data['users'] == null) return null;
-      return List.from(data['users']).map((e) {
-        return UserModel.fromJson(e);
-      }).toList();
-    });
-  }
-
-  @override
-  Stream<List<UserModel>?> getTopUsersByPostCount() {
-    return _firestore.collection('topUsers').doc('topUsersByPostCount').snapshots().map((doc) {
-      final data = doc.data();
-      if (data == null || data['users'] == null) return null;
-      return List.from(data['users']).map((e) {
-        return UserModel.fromJson(e);
-      }).toList();
-    });
-  }
 }

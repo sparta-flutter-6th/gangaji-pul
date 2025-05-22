@@ -4,6 +4,6 @@ import 'package:gangaji_pul/domain/entity/rank_entity.dart';
 
 final chatRankProvider = StreamProvider<List<RankEntity>?>((ref) => ref.watch(rankRepositoryProvider).getChatRank());
 
-final postRankProvider = StreamProvider<List<RankEntity>?>((ref) => ref.watch(rankRepositoryProvider).getChatRank());
+final postRankProvider = StreamProvider<List<RankEntity>?>((ref) => ref.watch(rankRepositoryProvider).getPostRank());
 
 final likeRankProvider = StreamProvider<List<RankEntity>?>((ref) => ref.watch(rankRepositoryProvider).getLikeRank());

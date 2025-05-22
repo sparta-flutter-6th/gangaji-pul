@@ -26,32 +26,11 @@ class RankDataSourceImpl implements RankDataSource {
   }
 
   @override
-  Stream<List<Map<UserModel, int>>> getChatRank() {
-    return _firebaseFirestore.collection('chats').snapshots().asyncMap((chatSnapshot) async {
-      final Map<String, int> userCounts = {};
-      for (final doc in chatSnapshot.docs) {
-        final userRef = doc.data()['user'] as DocumentReference?;
-        if (userRef == null) continue;
-
-        final uid = userRef.id;
-        userCounts[uid] = (userCounts[uid] ?? 0) + 1;
-      }
-
-      final sortedEntries = userCounts.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
-
-      final topEntries = sortedEntries.take(3);
-
-      List<Map<UserModel, int>> topUsers = [];
-
-      for (final entry in topEntries) {
-        final userDoc = await _firebaseFirestore.collection('users').doc(entry.key).get();
-        if (userDoc.exists) {
-          final data = userDoc.data()!;
-          topUsers.add({UserModel.fromJson(data): entry.value});
-        }
-      }
-
-      return topUsers;
+  Stream<List<UserModel>?> getChatRank() {
+    return _firebaseFirestore.collection('topUsers').doc('topUsersByChatCount').snapshots().map((doc) {
+      final data = doc.data();
+      if (data == null || data['users'] == null) return null;
+      return List.from(data['users']).map((e) => UserModel.fromJson(e)).toList();
     });
   }
 }

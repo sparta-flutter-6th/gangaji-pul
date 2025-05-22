@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/domain/entity/user_model.dart';
-import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
+import 'package:gangaji_pul/presentation/providers/rank_stream_provider.dart';
 import 'package:image_picker/image_picker.dart';
 
 class LoadProfileImage extends ConsumerWidget {
@@ -17,14 +17,12 @@ class LoadProfileImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topUsersByLikeCount = ref.watch(topUsersByLikeCountProvider);
-    final topUsersByPostCount = ref.watch(topUsersByPostCountProvider);
-    final isTopByLike =
-        topUsersByLikeCount.asData?.value?.any((u) => u.uid == user.uid) ??
-        false;
-    final isTopByPost =
-        topUsersByPostCount.asData?.value?.any((u) => u.uid == user.uid) ??
-        false;
+    final topUsersByLikeCount = ref.watch(likeRankProvider);
+    final topUsersByPostCount = ref.watch(postRankProvider);
+    final topUsersByChatCount = ref.watch(chatRankProvider);
+    final isTopByLike = topUsersByLikeCount.asData?.value?.any((u) => u.user.uid == user.uid) ?? false;
+    final isTopByPost = topUsersByPostCount.asData?.value?.any((u) => u.user.uid == user.uid) ?? false;
+    final isTopByChat = topUsersByChatCount.asData?.value?.any((u) => u.user.uid == user.uid) ?? false;
 
     return SizedBox.square(
       dimension: size,
@@ -37,39 +35,23 @@ class LoadProfileImage extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(100),
                 child: Image.network(
                   user.profileImageUrl,
-                  frameBuilder: (
-                    context,
-                    child,
-                    frame,
-                    wasSynchronouslyLoaded,
-                  ) {
+                  frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                     if (wasSynchronouslyLoaded || frame != null) {
                       return child;
                     } else {
-                      return SizedBox.square(
-                        dimension: size,
-                        child: Center(child: CircularProgressIndicator()),
-                      );
+                      return SizedBox.square(dimension: size, child: Center(child: CircularProgressIndicator()));
                     }
                   },
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
                       width: size,
                       height: size,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.grey, width: 4),
-                        color: Color(0XFF332121),
-                      ),
+                      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey, width: 4), color: Color(0XFF332121)),
                       child: IconButton(
                         onPressed: () {
                           _pickImage(user.uid);
                         },
-                        icon: Icon(
-                          Icons.camera_alt,
-                          size: size / 2,
-                          color: Colors.grey,
-                        ),
+                        icon: Icon(Icons.camera_alt, size: size / 2, color: Colors.grey),
                       ),
                     );
                   },
@@ -80,18 +62,9 @@ class LoadProfileImage extends ConsumerWidget {
               ),
             ),
           ),
-          isTopByPost
-              ? SizedBox.square(
-                dimension: size,
-                child: Image.asset('assets/images/profile_border.png'),
-              )
-              : SizedBox(),
-          isTopByLike
-              ? SizedBox.square(
-                dimension: size,
-                child: Image.asset('assets/images/profile_border.png'),
-              )
-              : SizedBox(),
+          isTopByPost ? SizedBox.square(dimension: size, child: Image.asset('assets/images/profile_border.png')) : SizedBox(),
+          isTopByChat ? SizedBox.square(dimension: size, child: Image.asset('assets/images/profile_border.png')) : SizedBox(),
+          isTopByLike ? SizedBox.square(dimension: size, child: Image.asset('assets/images/profile_border.png')) : SizedBox(),
         ],
       ),
     );
@@ -99,14 +72,10 @@ class LoadProfileImage extends ConsumerWidget {
 
   Future<void> _pickImage(String uid) async {
     final picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-    );
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return;
 
-    final refStorage = FirebaseStorage.instance.ref().child(
-      'userProfileImages/$uid.jpg',
-    );
+    final refStorage = FirebaseStorage.instance.ref().child('userProfileImages/$uid.jpg');
     final file = File(pickedFile.path);
 
     try {
@@ -118,9 +87,7 @@ class LoadProfileImage extends ConsumerWidget {
 
       log('프로필 url : $downloadUrl');
 
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'profileImageUrl': downloadUrl,
-      });
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({'profileImageUrl': downloadUrl});
     } catch (e) {
       log('이미지 업로드 중 오류 발생: $e');
     }
