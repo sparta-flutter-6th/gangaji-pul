@@ -118,9 +118,9 @@ class LoggedInMyPage extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 40),
-                GrassBoard(user: user),
                 const SizedBox(height: 20),
+                GrassBoard(user: user),
+                const SizedBox(height: 10),
                 Text(
                   '🔔산책 알림',
                   style: TextStyle(
@@ -131,7 +131,6 @@ class LoggedInMyPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 const WalkAlarmSelector(),
-                const SizedBox(height: 20),
               ],
             ),
           ),
