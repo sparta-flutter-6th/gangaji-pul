@@ -36,7 +36,7 @@ class _RankingBoardState extends ConsumerState<RankingBoard> {
     final likeRank = likeRankAsync.asData!.value;
     final postRank = postRankAsync.asData!.value;
 
-    final pageData = [(title: "오늘의 채팅왕", rankEntries: chatRank), (title: "좋아요왕", rankEntries: likeRank), (title: "산책왕", rankEntries: postRank)];
+    final pageData = [(title: "채팅왕", rankEntries: chatRank), (title: "좋아요왕", rankEntries: likeRank), (title: "산책왕", rankEntries: postRank)];
 
     return Stack(
       alignment: Alignment.bottomCenter,
