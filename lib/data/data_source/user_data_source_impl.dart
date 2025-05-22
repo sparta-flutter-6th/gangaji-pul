@@ -20,37 +20,8 @@ class UserDataSourceImpl implements UserDataSource {
         bio: '',
         likeCount: data['likeCount'] ?? 0,
         postCount: data['postCount'] ?? 0,
+        chatCount: data['chatCount'] ?? 0,
       );
     });
-  }
-
-  @override
-  Stream<List<UserModel>?> getTopUsersByLikeCount() {
-    return _firestore
-        .collection('topUsers')
-        .doc('topUsersByPostCount')
-        .snapshots()
-        .map((doc) {
-          final data = doc.data();
-          if (data == null || data['users'] == null) return null;
-          return List.from(data['users']).map((e) {
-            return UserModel.fromJson(e);
-          }).toList();
-        });
-  }
-
-  @override
-  Stream<List<UserModel>?> getTopUsersByPostCount() {
-    return _firestore
-        .collection('topUsers')
-        .doc('topUsersByPostCount')
-        .snapshots()
-        .map((doc) {
-          final data = doc.data();
-          if (data == null || data['users'] == null) return null;
-          return List.from(data['users']).map((e) {
-            return UserModel.fromJson(e);
-          }).toList();
-        });
   }
 }

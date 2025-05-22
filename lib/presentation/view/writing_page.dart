@@ -35,14 +35,7 @@ class _WritingPageState extends ConsumerState<WritingPage> {
     if (!isValid) {
       showDialog(
         context: context,
-        builder:
-            (_) => const AlertDialog(
-              title: Text(
-                "강아지 사진을 업로드해주세요🐾🐾",
-                style: TextStyle(fontSize: 15),
-              ),
-              content: Text("(사람 사진을 업로드할 수 없습니다)"),
-            ),
+        builder: (_) => const AlertDialog(title: Text("강아지 사진을 업로드해주세요🐾🐾", style: TextStyle(fontSize: 15)), content: Text("(사람 사진을 업로드할 수 없습니다)")),
       );
     }
   }
@@ -51,19 +44,6 @@ class _WritingPageState extends ConsumerState<WritingPage> {
   Widget build(BuildContext context) {
     final postSubmission = ref.read(postSubmissionViewModelProvider);
     final rawUser = ref.watch(userStreamProvider).asData?.value;
-
-    final user =
-        rawUser ??
-        UserModel(
-          uid: 'test_uid',
-          name: '테스트계정',
-          nickname: '가짜진주',
-          email: 'test@example.com',
-          profileImageUrl: '',
-          bio: '',
-          likeCount: 0,
-          postCount: 0,
-        );
 
     return Scaffold(
       appBar: AppBar(
@@ -262,12 +242,7 @@ class _WritingPageState extends ConsumerState<WritingPage> {
                       final content = _contentController.text.trim();
 
                       try {
-                        await postSubmission.createPost(
-                          content: content,
-                          tags: _tags,
-                          imageFile: yolo.selectedImage!,
-                          user: user,
-                        );
+                        await postSubmission.createPost(content: content, tags: _tags, imageFile: yolo.selectedImage!, user: rawUser!);
 
                         if (context.mounted) {
                           Navigator.pop(context);
