@@ -23,6 +23,8 @@ migrate_working_dir/
 # is commented out by default.
 #.vscode/
 
+#.env파일
+.env
 
 # Firebase 설정 파일
 android/app/google-services.json
