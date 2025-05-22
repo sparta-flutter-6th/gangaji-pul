@@ -15,8 +15,13 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  DocumentReference getUserReference(String uid) {
+    return FirebaseFirestore.instance.collection('users').doc(uid);
+  }
+
+  @override
   Future<void> createUserDocIfNotExists(User user) async {
-    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final docRef = getUserReference(user.uid);
     final doc = await docRef.get();
 
     if (!doc.exists) {
@@ -34,12 +39,9 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<List<UserModel>?> getTopUsersByLikeCount() {
-    return dataSource.getTopUsersByLikeCount();
-  }
-
-  @override
-  Stream<List<UserModel>?> getTopUsersByPostCount() {
-    return dataSource.getTopUsersByPostCount();
+  Future<UserModel> getUser(String uid) async {
+    final userDoc = await getUserReference(uid).get();
+    final userData = userDoc.data();
+    return UserModel.fromJson(userData! as Map<String, dynamic>);
   }
 }
