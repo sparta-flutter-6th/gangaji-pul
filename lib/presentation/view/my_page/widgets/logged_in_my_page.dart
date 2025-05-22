@@ -23,7 +23,7 @@ class LoggedInMyPage extends ConsumerWidget {
         }
 
         return Scaffold(
-          backgroundColor: backgroundColor,
+          backgroundColor: const Color(0xFFEAE3C0),
           appBar: AppBar(
             backgroundColor: accentGreenColor,
             centerTitle: true,
@@ -35,7 +35,7 @@ class LoggedInMyPage extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () {
-                  authService.signOut();
+                  authService.signOut(); // 임시 로그아웃
                 },
                 icon: Icon(Icons.settings, color: Colors.grey[700]),
               ),
@@ -43,95 +43,95 @@ class LoggedInMyPage extends ConsumerWidget {
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 40, 20, 40),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LoadProfileImage(user: user, size: 120),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user.name,
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              user.email.split('@')[0],
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        const Tooltip(
-                          message: '게시글 수',
-                          child: Icon(
-                            Icons.pets,
-                            size: 30,
-                            color: normalBrownColor,
-                          ),
-                        ),
-                        Text(
-                          '${user.postCount}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
                     const SizedBox(width: 20),
-                    Column(
-                      children: [
-                        const Tooltip(
-                          message: '좋아요 수',
-                          child: Icon(
-                            Icons.favorite,
-                            size: 30,
-                            color: Colors.red,
-                          ),
-                        ),
-                        Text(
-                          '${user.likeCount}',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                GrassBoard(user: user),
-                Stack(
-                  children: [
-                    Image.asset('assets/images/dogCat.png'),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 10,
+                    Expanded(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '🔔산책 알림',
-                            style: TextStyle(
-                              fontSize: 16,
+                            user.name,
+                            style: const TextStyle(
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey[800],
                             ),
                           ),
-                          const WalkAlarmSelector(),
+                          const SizedBox(height: 8),
+                          Text(
+                            user.email.split('@')[0],
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  const Tooltip(
+                                    message: '게시글 수',
+                                    child: Icon(
+                                      Icons.pets,
+                                      size: 30,
+                                      color: Color(0xFF332121),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${user.postCount}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 20),
+                              Column(
+                                children: [
+                                  const Tooltip(
+                                    message: '좋아요 수',
+                                    child: Icon(
+                                      Icons.favorite,
+                                      size: 30,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${user.likeCount}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 40),
+                GrassBoard(user: user),
+                const SizedBox(height: 20),
+                Text(
+                  '🔔산책 알림',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const WalkAlarmSelector(),
+                const SizedBox(height: 20),
               ],
             ),
           ),
