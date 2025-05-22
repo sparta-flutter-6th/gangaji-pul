@@ -44,7 +44,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
-                  'gaepull',
+                  '강아지풀',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -53,7 +53,11 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                   ),
                 ),
 
-                Image.asset('assets/images/gaepull.png', width: 180, height: 180),
+                Image.asset(
+                  'assets/images/gaepull.png',
+                  width: 180,
+                  height: 180,
+                ),
               ],
             ),
           ),

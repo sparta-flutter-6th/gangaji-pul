@@ -30,7 +30,11 @@ class _ChatListState extends ConsumerState<ChatList> {
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        _scrollController.animateTo(_scrollController.position.minScrollExtent, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+        _scrollController.animateTo(
+          _scrollController.position.minScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       }
     });
   }
@@ -59,7 +63,9 @@ class _ChatListState extends ConsumerState<ChatList> {
           ),
         );
       },
-      loading: () => Expanded(child: const Center(child: CircularProgressIndicator())),
+      loading:
+          () =>
+              Expanded(child: const Center(child: CircularProgressIndicator())),
       error: (e, _) => Center(child: Text('에러 발생: $e')),
     );
   }
@@ -71,7 +77,10 @@ class _ChatListState extends ConsumerState<ChatList> {
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -83,18 +92,29 @@ class _ChatListState extends ConsumerState<ChatList> {
                   clipBehavior: Clip.antiAlias,
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child:
-                      _isProfileImageUrlValid(userCache[chat.user.id]?.profileImageUrl)
-                          ? Image.network(userCache[chat.user.id]!.profileImageUrl, fit: BoxFit.cover)
+                      _isProfileImageUrlValid(
+                            userCache[chat.user.id]?.profileImageUrl,
+                          )
+                          ? Image.network(
+                            userCache[chat.user.id]!.profileImageUrl,
+                            fit: BoxFit.cover,
+                          )
                           : const Icon(Icons.person),
                 ),
                 const SizedBox(width: 8),
-                Text(userCache[chat.user.id]?.name ?? '익명', style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  userCache[chat.user.id]?.name ?? '익명',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ],
             ),
             const SizedBox(height: 8),
             Text(chat.message),
             const SizedBox(height: 4),
-            Text(timeago.format(chat.createdAt, locale: 'ko'), style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+            Text(
+              timeago.format(chat.createdAt, locale: 'ko'),
+              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            ),
           ],
         ),
       ),
