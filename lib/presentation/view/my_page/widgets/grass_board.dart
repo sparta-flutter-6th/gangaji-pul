@@ -41,7 +41,7 @@ class GrassBoard extends ConsumerWidget {
                           color: Colors.black87,
                         ),
                       )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ],
               ),
             );

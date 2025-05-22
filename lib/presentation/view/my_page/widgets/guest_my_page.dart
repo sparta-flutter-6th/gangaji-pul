@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/const/color_const.dart';
 import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 
 class GuestMyPage extends StatelessWidget {
@@ -9,9 +10,9 @@ class GuestMyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Center(
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -45,8 +46,8 @@ class GuestMyPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      backgroundColor: Color(0XFF7C5C42),
-                      foregroundColor: Color(0XFFEAE3C0),
+                      backgroundColor: normalBrownColor,
+                      foregroundColor: backgroundColor,
                       minimumSize: Size.fromHeight(50),
                     ),
                     child: const Text(

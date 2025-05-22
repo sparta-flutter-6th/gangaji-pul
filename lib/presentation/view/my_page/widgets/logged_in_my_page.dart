@@ -42,84 +42,96 @@ class LoggedInMyPage extends ConsumerWidget {
               const SizedBox(width: 4),
             ],
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 40, 20, 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      LoadProfileImage(user: user, size: 120),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user.name,
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 40, 20, 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LoadProfileImage(user: user, size: 120),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user.name,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              user.email.split('@')[0],
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[700],
-                              ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            user.email.split('@')[0],
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[700],
                             ),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    const Tooltip(
-                                      message: '게시글 수',
-                                      child: Icon(Icons.pets, size: 30, color: Color(0xFF332121)),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  const Tooltip(
+                                    message: '게시글 수',
+                                    child: Icon(
+                                      Icons.pets,
+                                      size: 30,
+                                      color: Color(0xFF332121),
                                     ),
-                                    Text('${user.postCount}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                                const SizedBox(width: 20),
-                                Column(
-                                  children: [
-                                    const Tooltip(
-                                      message: '좋아요 수',
-                                      child: Icon(Icons.favorite, size: 30, color: Colors.red),
+                                  ),
+                                  Text(
+                                    '${user.postCount}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text('${user.likeCount}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 20),
+                              Column(
+                                children: [
+                                  const Tooltip(
+                                    message: '좋아요 수',
+                                    child: Icon(
+                                      Icons.favorite,
+                                      size: 30,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${user.likeCount}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-                  GrassBoard(user: user),
-                  const SizedBox(height: 20),
-                  Text(
-                    '🔔산책 알림',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
                     ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                GrassBoard(user: user),
+                const SizedBox(height: 10),
+                Text(
+                  '🔔산책 알림',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
                   ),
-                  const SizedBox(height: 10),
-                  const WalkAlarmSelector(),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Image.asset('assets/images/dogCat.png'),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 10),
+                const WalkAlarmSelector(),
+              ],
             ),
           ),
         );
