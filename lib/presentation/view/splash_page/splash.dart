@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
 import 'package:go_router/go_router.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
     super.initState();
+    _initApp();
+  }
 
-    // 2초 후 자동으로 HomePage로 이동
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        context.go('/home');
-      }
-    });
+  Future<void> _initApp() async {
+    final postViewModel = ref.read(postViewModelProvider.notifier);
+
+    await postViewModel.fetchPost();
+    await postViewModel.fetchPost();
+
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    if (mounted) {
+      context.go('/home');
+    }
   }
 
   @override
