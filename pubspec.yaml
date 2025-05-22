@@ -37,6 +37,7 @@ dependencies:
   flutter_local_notifications: ^19.2.1
   timezone: ^0.10.1
   sentry_flutter: ^8.14.2
+  app_settings: ^6.1.1
 
 
 dev_dependencies:
