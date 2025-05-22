@@ -8,9 +8,11 @@ import 'package:gangaji_pul/firebase_options.dart';
 import 'package:gangaji_pul/router.dart';
 import 'package:gangaji_pul/service/alarm/notification_helper.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await dotenv.load(fileName: ".env"); // ← .env 로드
   MobileAds.instance.initialize(); //광고 초기화
 
@@ -25,8 +27,10 @@ Future<void> main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-
-  runApp(ProviderScope(child: const MainApp()));
+  await SentryFlutter.init((options) {
+    options.dsn = dotenv.env['SENTRY_DNS']!;
+    options.sendDefaultPii = true;
+  }, appRunner: () => runApp(SentryWidget(child: ProviderScope(child: const MainApp()))));
 }
 
 class MainApp extends ConsumerWidget {
