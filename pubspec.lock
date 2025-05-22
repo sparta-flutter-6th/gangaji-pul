@@ -741,8 +741,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.0"
-<<<<<<< HEAD
-=======
   timeago:
     dependency: "direct main"
     description:
@@ -751,7 +749,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.1"
->>>>>>> 1b2e0487eef8668316083dc9819370b09b7de00b
   timezone:
     dependency: "direct main"
     description:
