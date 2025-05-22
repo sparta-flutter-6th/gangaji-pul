@@ -2,14 +2,14 @@
 // post 작성 페이지에서는 다른 entity 사용.
 class PostViewEntity {
   final String postId;
-  final String userId;
+  final String userName;
   final DateTime createdAt;
   final String content;
   final List<String> tags;
   final String imageUrl;
 
   PostViewEntity({
-    required this.userId,
+    required this.userName,
     required this.imageUrl,
     required this.postId,
     required this.content,

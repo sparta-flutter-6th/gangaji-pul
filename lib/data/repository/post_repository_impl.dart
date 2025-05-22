@@ -39,7 +39,6 @@ class PostRepositoryImpl implements PostRepository {
     await _dataSource.createPost(postDto); // 실제 저장
   }
 
-
   @override
   Future<PostViewEntity> getPost() async {
     final dto = await _dataSource.getPost(); // fetch from Firebase
@@ -49,7 +48,7 @@ class PostRepositoryImpl implements PostRepository {
       imageUrl: dto.imageUrl,
       postId: dto.postId,
       tags: dto.tags,
-      userId: dto.userId,
+      userName: dto.userName,
     );
   }
 }
