@@ -113,25 +113,26 @@ class LoggedInMyPage extends ConsumerWidget {
                 Stack(
                   children: [
                     Image.asset('assets/images/dogCat.png'),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4),
-                    child: Text(
-                      '🔔산책 알림',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[800],
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 10,
+                      child: Column(
+                        children: [
+                          Text(
+                            '🔔산책 알림',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                          const WalkAlarmSelector(),
+                        ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                const WalkAlarmSelector(),
               ],
             ),
           ),
