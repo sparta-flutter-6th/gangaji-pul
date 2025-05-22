@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -23,7 +24,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     await postViewModel.fetchPost();
     await postViewModel.fetchPost();
 
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 3000));
 
     if (mounted) {
       context.go('/home');
@@ -33,6 +34,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -41,8 +43,11 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           // 중앙 텍스트 + 개풀 이미지
           Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Lottie.asset('assets/images/gaepull.json', width: 180, height: 180, fit: BoxFit.fill),
+
                 const Text(
                   '강아지풀',
                   style: TextStyle(
@@ -51,12 +56,6 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                     color: Color(0xFF688F4E),
                     shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
                   ),
-                ),
-
-                Image.asset(
-                  'assets/images/gaepull.png',
-                  width: 180,
-                  height: 180,
                 ),
               ],
             ),

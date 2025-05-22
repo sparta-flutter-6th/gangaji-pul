@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/post_view_model_provider.dart';
@@ -79,7 +78,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       PostInfoColumn(
-                        id: post.userId,
+                        id: post.userName,
                         dateTime: "${post.createdAt.month}월 ${post.createdAt.day}일",
                         content: post.content,
                         hashTag: post.tags,
