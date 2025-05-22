@@ -7,6 +7,7 @@ class UserModel {
   String bio;
   int likeCount;
   int postCount;
+  int chatCount;
 
   UserModel({
     required this.uid,
@@ -17,6 +18,7 @@ class UserModel {
     required this.bio,
     required this.likeCount,
     required this.postCount,
+    required this.chatCount,
   });
 
   UserModel copyWith({
@@ -28,6 +30,7 @@ class UserModel {
     String? bio,
     int? likeCount,
     int? postCount,
+    int? chatCount,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -38,6 +41,7 @@ class UserModel {
       bio: bio ?? this.bio,
       likeCount: likeCount ?? this.likeCount,
       postCount: postCount ?? this.postCount,
+      chatCount: chatCount ?? this.chatCount,
     );
   }
 
@@ -51,5 +55,6 @@ class UserModel {
         bio: map['bio'] ?? '',
         likeCount: map['likeCount'] ?? 0,
         postCount: map['postCount'] ?? 0,
+        chatCount: map['chatCount'] ?? 0,
       );
 }
