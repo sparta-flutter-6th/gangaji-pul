@@ -1,9 +1,9 @@
-const { onDocumentCreated, onDocumentDeleted } =
-  require("firebase-functions/v2/firestore");
-const { initializeApp } = require("firebase-admin/app");
+const { onDocumentCreated, onDocumentDeleted } = require("firebase-functions/v2/firestore");
+const admin = require("firebase-admin");
+
 const { getFirestore } = require("firebase-admin/firestore");
 
-initializeApp();
+admin.initializeApp();
 const db = getFirestore();
 
 exports.incrementUserPostCount =
@@ -89,12 +89,17 @@ exports.decrementUserlikeCount =
   });
 
 exports.incrementUserChatCount =
-  onDocumentCreated("/chats/{userId}", async (event) => {
-    const { userId } = event.params;
+  onDocumentCreated("/chats/{chatId}", async (event) => {
+    const chatData = event.data?.data();
+    if (!chatData) return;
+    const userPath = chatData.user;
+
+    const userId = userPath.id; // 안전한 접근 방식
+    console.log("유저 ID:", userId);
     const docRef = db.collection("users").doc(userId);
     const user = await docRef.get();
     await docRef.update({
-      "chatCount": user.data().likeCount + 1,
+      "chatCount": user.data().chatCount + 1,
     });
     const snapshot = await db.collection("users")
       .orderBy("chatCount", "desc")
