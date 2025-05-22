@@ -22,7 +22,7 @@ class LoggedInMyPage extends ConsumerWidget {
         }
 
         return Scaffold(
-          backgroundColor: Color(0xFFEAE3C0),
+          backgroundColor: backgroundColor,
           appBar: AppBar(
             backgroundColor: accentGreenColor,
             centerTitle: true,
@@ -34,7 +34,6 @@ class LoggedInMyPage extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () {
-                  // 임시용 로그아웃
                   authService.signOut();
                 },
                 icon: Icon(Icons.settings, color: Colors.grey[700]),
@@ -75,24 +74,24 @@ class LoggedInMyPage extends ConsumerWidget {
                     ),
                     Column(
                       children: [
-                        Tooltip(
+                        const Tooltip(
                           message: '게시글 수',
                           child: Icon(
                             Icons.pets,
                             size: 30,
-                            color: Color(0XFF332121),
+                            color: normalBrownColor,
                           ),
                         ),
                         Text(
                           '${user.postCount}',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                     const SizedBox(width: 20),
                     Column(
                       children: [
-                        Tooltip(
+                        const Tooltip(
                           message: '좋아요 수',
                           child: Icon(
                             Icons.favorite,
@@ -109,11 +108,7 @@ class LoggedInMyPage extends ConsumerWidget {
                   ],
                 ),
                 GrassBoard(user: user),
-                Stack(
-                  children: [
-                    Image.asset('assets/images/dogCat.png'),
-                  ],
-                ),
+                Stack(children: [Image.asset('assets/images/dogCat.png')]),
               ],
             ),
           ),
