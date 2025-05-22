@@ -1,6 +1,6 @@
 name: gangaji_pul
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -38,12 +38,18 @@ dependencies:
   timezone: ^0.10.1
   sentry_flutter: ^8.14.2
   app_settings: ^6.1.1
-
+  flutter_launcher_icons: ^0.11.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true
