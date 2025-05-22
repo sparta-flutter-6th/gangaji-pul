@@ -24,11 +24,11 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     await postViewModel.fetchPost();
     await postViewModel.fetchPost();
 
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 3000));
 
-    // if (mounted) {
-    //   context.go('/home');
-    // }
+    if (mounted) {
+      context.go('/home');
+    }
   }
 
   @override
