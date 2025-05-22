@@ -39,107 +39,115 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
       }
     }
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: bottom),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "댓글 (${comments.length})",
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-
-            // 댓글 목록
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.65,
-              child: ListView.builder(
-                itemCount: parentComments.length,
-                itemBuilder: (context, index) {
-                  final parent = parentComments[index];
-                  final isReplyTarget = replyingTo?.id == parent.id;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildCommentTile(
-                        parent,
-                        currentUser,
-                        isReplyTarget,
-                        isReply: false,
-                      ),
-                      if (repliesMap[parent.id] != null)
-                        ...repliesMap[parent.id]!.map(
-                          (reply) => Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.subdirectory_arrow_right,
-                                  size: 16,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(width: 4),
-                                Expanded(
-                                  child: _buildCommentTile(
-                                    reply,
-                                    currentUser,
-                                    false,
-                                    isReply: true,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      const Divider(),
-                    ],
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            if (replyingTo != null)
-              Row(
-                children: [
-                  const Icon(Icons.reply, size: 16),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${replyingTo!.userName}님에게 답글 작성 중...',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () => setState(() => replyingTo = null),
-                    child: const Text("취소"),
-                  ),
-                ],
-              ),
-
-            // 댓글 입력창
-            TextField(
-              controller: _controller,
-              minLines: 1,
-              maxLines: 3,
-              decoration: InputDecoration(
-                hintText: "댓글을 입력하세요",
-                border: const OutlineInputBorder(),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.send, color: accentGreenColor),
-                  onPressed: _submit,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(), // 외부 터치 시 키보드 내림
+      child: Padding(
+        padding: EdgeInsets.only(bottom: bottom),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: const BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                comments.isEmpty
+                    ? "댓글"
+                    : "댓글 (${comments.length})", // 댓글 수에 따른 표시
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+
+              // 댓글 목록
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.65,
+                child: ListView.builder(
+                  itemCount: parentComments.length,
+                  itemBuilder: (context, index) {
+                    final parent = parentComments[index];
+                    final isReplyTarget = replyingTo?.id == parent.id;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildCommentTile(
+                          parent,
+                          currentUser,
+                          isReplyTarget,
+                          isReply: false,
+                        ),
+                        if (repliesMap[parent.id] != null)
+                          ...repliesMap[parent.id]!.map(
+                            (reply) => Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.subdirectory_arrow_right,
+                                    size: 16,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildCommentTile(
+                                      reply,
+                                      currentUser,
+                                      false,
+                                      isReply: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        const Divider(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              if (replyingTo != null)
+                Row(
+                  children: [
+                    const Icon(Icons.reply, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${replyingTo!.userName}님에게 답글 작성 중...',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () => setState(() => replyingTo = null),
+                      child: const Text("취소"),
+                    ),
+                  ],
+                ),
+
+              // 댓글 입력창
+              TextField(
+                controller: _controller,
+                minLines: 1,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  hintText: "댓글을 입력하세요",
+                  border: const OutlineInputBorder(),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.send, color: accentGreenColor),
+                    onPressed: _submit,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -164,7 +172,6 @@ class _CommentBottomSheetState extends ConsumerState<CommentBottomSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 유저명, 본문, 아이콘 한 줄 정렬
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
