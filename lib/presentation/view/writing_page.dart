@@ -35,10 +35,14 @@ class _WritingPageState extends ConsumerState<WritingPage> {
     if (!isValid) {
       showDialog(
         context: context,
-        builder: (_) => const AlertDialog(
-          title: Text("강아지 사진을 업로드해주세요🐾🐾", style: TextStyle(fontSize: 15)),
-          content: Text("(사람 사진을 업로드할 수 없습니다)"),
-        ),
+        builder:
+            (_) => const AlertDialog(
+              title: Text(
+                "강아지 사진을 업로드해주세요🐾🐾",
+                style: TextStyle(fontSize: 15),
+              ),
+              content: Text("(사람 사진을 업로드할 수 없습니다)"),
+            ),
       );
     }
   }
@@ -48,7 +52,8 @@ class _WritingPageState extends ConsumerState<WritingPage> {
     final postSubmission = ref.read(postSubmissionViewModelProvider);
     final rawUser = ref.watch(userStreamProvider).asData?.value;
 
-    final user = rawUser ??
+    final user =
+        rawUser ??
         UserModel(
           uid: 'test_uid',
           name: '테스트계정',
@@ -91,29 +96,37 @@ class _WritingPageState extends ConsumerState<WritingPage> {
                           ),
                         ],
                       ),
-                      child: yolo.selectedImage != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.file(
-                                yolo.selectedImage!,
-                                width: double.infinity,
-                                height: 220,
-                                fit: BoxFit.cover,
+                      child:
+                          yolo.selectedImage != null
+                              ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.file(
+                                  yolo.selectedImage!,
+                                  width: double.infinity,
+                                  height: 220,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                              : const Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add_a_photo,
+                                      size: 50,
+                                      color: Colors.grey,
+                                    ),
+                                    SizedBox(height: 12),
+                                    Text(
+                                      '사진 선택하기',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            )
-                          : const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
-                                  SizedBox(height: 12),
-                                  Text(
-                                    '사진 선택하기',
-                                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                            ),
                     ),
                     if (yolo.isLoading)
                       const CircularProgressIndicator(color: Colors.brown),
@@ -131,10 +144,11 @@ class _WritingPageState extends ConsumerState<WritingPage> {
                       controller: _tagController,
                       onChanged: (text) {
                         setState(() {
-                          _tags = text
-                              .split(RegExp(r'\s+'))
-                              .where((tag) => tag.isNotEmpty)
-                              .toList();
+                          _tags =
+                              text
+                                  .split(RegExp(r'\s+'))
+                                  .where((tag) => tag.isNotEmpty)
+                                  .toList();
                         });
                       },
                       decoration: const InputDecoration(
@@ -169,27 +183,28 @@ class _WritingPageState extends ConsumerState<WritingPage> {
           width: double.infinity,
           height: 50,
           child: ElevatedButton(
-            onPressed: yolo.isImageValid
-                ? () async {
-                    final content = _contentController.text.trim();
+            onPressed:
+                yolo.isImageValid
+                    ? () async {
+                      final content = _contentController.text.trim();
 
-                    try {
-                      await postSubmission.createPost(
-                        content: content,
-                        tags: _tags,
-                        imageFile: yolo.selectedImage!,
-                        user: user,
-                      );
+                      try {
+                        await postSubmission.createPost(
+                          content: content,
+                          tags: _tags,
+                          imageFile: yolo.selectedImage!,
+                          user: user,
+                        );
 
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                        showCustomSnackBar(context, '업로드 완료!');
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          showCustomSnackBar(context, '업로드 완료!');
+                        }
+                      } catch (e) {
+                        showCustomSnackBar(context, '업로드 실패 😢');
                       }
-                    } catch (e) {
-                      showCustomSnackBar(context, '업로드 실패 😢');
                     }
-                  }
-                : null,
+                    : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF8B6B4F),
               disabledBackgroundColor: Colors.grey[400],
