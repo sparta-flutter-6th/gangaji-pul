@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/presentation/providers/chat_view_model_provider.dart';
-import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 
 class ChatInput extends ConsumerStatefulWidget {
   const ChatInput({super.key});
