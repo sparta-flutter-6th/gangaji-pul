@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>218305786593-lvk7g1n79ksva0v15sbl6i59ci6ql7o1.apps.googleusercontent.com</string>
+	<string>218305786593-jtn7n9m24buafgn96d9l80siorsh5clr.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.218305786593-lvk7g1n79ksva0v15sbl6i59ci6ql7o1</string>
+	<string>com.googleusercontent.apps.218305786593-jtn7n9m24buafgn96d9l80siorsh5clr</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>218305786593-117c7vusghe1o4kr09c9a4m4lodlpsi2.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.gangajiPul</string>
+	<string>com.sparta.gangajiPul</string>
 	<key>PROJECT_ID</key>
 	<string>gangaji-pul</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:218305786593:ios:cddd2836ea542de8fcbda0</string>
+	<string>1:218305786593:ios:3f022c7e75c6cf8afcbda0</string>
 	<key>DATABASE_URL</key>
 	<string>https://gangaji-pul-default-rtdb.firebaseio.com</string>
 </dict>
