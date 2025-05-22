@@ -108,7 +108,12 @@ class LoggedInMyPage extends ConsumerWidget {
                     ),
                   ],
                 ),
-                GrassBoard(user: user,),
+                GrassBoard(user: user),
+                Stack(
+                  children: [
+                    Image.asset('assets/images/dogCat.png'),
+                  ],
+                ),
               ],
             ),
           ),
