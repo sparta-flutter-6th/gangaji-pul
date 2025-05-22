@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gangaji_pul/core/banner_ad_unit_id.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // 배너 광고를 표시하는 커스텀 위젯.
@@ -19,7 +20,7 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
     super.initState();
     // 광고 객체 생성 및 초기화
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // 테스트용 배너 광고 단위 ID
+      adUnitId: bannerAdUnitId, // 테스트용 배너 광고 단위 ID
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(

@@ -45,6 +45,19 @@ class _WritingPageState extends ConsumerState<WritingPage> {
     final postSubmission = ref.read(postSubmissionViewModelProvider);
     final rawUser = ref.watch(userStreamProvider).asData?.value;
 
+    final user =
+        rawUser ??
+        UserModel(
+          uid: 'test_uid',
+          name: '테스트계정',
+          nickname: '가짜진주',
+          email: 'test@example.com',
+          profileImageUrl: '',
+          bio: '',
+          likeCount: 0,
+          postCount: 0,
+        );
+
     return Scaffold(
       appBar: AppBar(title: const Text('오늘의 산책 기록'), backgroundColor: const Color(0xFFEAE3C0), centerTitle: true),
       body: SingleChildScrollView(
@@ -133,7 +146,7 @@ class _WritingPageState extends ConsumerState<WritingPage> {
                       final content = _contentController.text.trim();
 
                       try {
-                        await postSubmission.createPost(content: content, tags: _tags, imageFile: yolo.selectedImage!, user: rawUser!);
+                        await postSubmission.createPost(content: content, tags: _tags, imageFile: yolo.selectedImage!, user: user);
 
                         if (context.mounted) {
                           Navigator.pop(context);
