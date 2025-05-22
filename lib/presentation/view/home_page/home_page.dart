@@ -7,6 +7,7 @@ import 'package:gangaji_pul/presentation/view/home_page/widget/comment_bottom_sh
 
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_info_column.dart';
 import 'package:gangaji_pul/presentation/view/home_page/widget/post_like_button.dart';
+import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -54,20 +55,25 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final postsProvider = ref.watch(postViewModelProvider);
 
+    final rawUser = ref.watch(userStreamProvider).asData?.value;
+
     if (postsProvider.length < 2) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/write');
-        },
+      floatingActionButton:
+          rawUser == null
+              ? null
+              : FloatingActionButton(
+                onPressed: () {
+                  context.push('/write');
+                },
 
-        backgroundColor: Color(0xFF688F4E),
+                backgroundColor: Color(0xFF688F4E),
 
-        child: const Icon(Icons.edit, color: Color(0xFFF4F1E9)),
-      ),
+                child: const Icon(Icons.edit, color: Color(0xFFF4F1E9)),
+              ),
       body: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.vertical,
