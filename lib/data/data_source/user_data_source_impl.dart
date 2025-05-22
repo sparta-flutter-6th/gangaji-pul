@@ -20,6 +20,7 @@ class UserDataSourceImpl implements UserDataSource {
         bio: '',
         likeCount: data['likeCount'] ?? 0,
         postCount: data['postCount'] ?? 0,
+        chatCount: data['chatCount'] ?? 0,
       );
     });
   }
