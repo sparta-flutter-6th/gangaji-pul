@@ -4,6 +4,7 @@ import 'package:gangaji_pul/const/color_const.dart';
 import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 import 'package:gangaji_pul/presentation/view/_widgets/load_profile_image.dart';
 import 'package:gangaji_pul/presentation/view/my_page/widgets/grass_board.dart';
+import 'package:gangaji_pul/presentation/view/_widgets/walk_alarm_card.dart';
 import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 
 class LoggedInMyPage extends ConsumerWidget {
@@ -108,7 +109,29 @@ class LoggedInMyPage extends ConsumerWidget {
                   ],
                 ),
                 GrassBoard(user: user),
-                Stack(children: [Image.asset('assets/images/dogCat.png')]),
+                Stack(
+                  children: [
+                    Image.asset('assets/images/dogCat.png'),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 10,
+                      child: Column(
+                        children: [
+                          Text(
+                            '🔔산책 알림',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                          const WalkAlarmSelector(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
