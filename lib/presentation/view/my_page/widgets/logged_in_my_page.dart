@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gangaji_pul/const/color_const.dart';
 import 'package:gangaji_pul/presentation/providers/auth_state_provider.dart';
 import 'package:gangaji_pul/presentation/view/_widgets/load_profile_image.dart';
+import 'package:gangaji_pul/presentation/view/my_page/widgets/grass_board.dart';
 import 'package:gangaji_pul/presentation/view_model/user_view_model.dart';
 
 class LoggedInMyPage extends ConsumerWidget {
@@ -47,7 +48,7 @@ class LoggedInMyPage extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    LoadProfileImage(user: user, size: 100),
+                    LoadProfileImage(user: user, size: 120),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20),
@@ -107,14 +108,11 @@ class LoggedInMyPage extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 300,
-                  child: Image.asset(
-                    'assets/images/grass.png',
-                    fit: BoxFit.cover,
-                  ),
+                GrassBoard(user: user),
+                Stack(
+                  children: [
+                    Image.asset('assets/images/dogCat.png'),
+                  ],
                 ),
               ],
             ),

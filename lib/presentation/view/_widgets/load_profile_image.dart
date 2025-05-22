@@ -30,47 +30,68 @@ class LoadProfileImage extends ConsumerWidget {
       dimension: size,
       child: Stack(
         children: [
-          ClipOval(
-            child: Image.network(
-              user.profileImageUrl,
-              frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                if (wasSynchronouslyLoaded || frame != null) {
-                  return child;
-                } else {
-                  return SizedBox.square(
-                    dimension: size,
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
+          Center(
+            child: SizedBox.square(
+              dimension: size - 10,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(
+                  user.profileImageUrl,
+                  frameBuilder: (
+                    context,
+                    child,
+                    frame,
+                    wasSynchronouslyLoaded,
+                  ) {
+                    if (wasSynchronouslyLoaded || frame != null) {
+                      return child;
+                    } else {
+                      return SizedBox.square(
+                        dimension: size,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: size,
+                      height: size,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey, width: 4),
+                        color: Color(0XFF332121),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          _pickImage(user.uid);
+                        },
+                        icon: Icon(
+                          Icons.camera_alt,
+                          size: size / 2,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    );
+                  },
                   width: size,
                   height: size,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey, width: 4),
-                    color: Color(0XFF332121),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      _pickImage(user.uid);
-                    },
-                    icon: Icon(
-                      Icons.camera_alt,
-                      size: size / 2,
-                      color: Colors.grey,
-                    ),
-                  ),
-                );
-              },
-              width: size,
-              height: size,
-              fit: BoxFit.cover,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
-          isTopByPost ? Icon(Icons.star) : SizedBox(),
-          isTopByLike ? Icon(Icons.favorite) : SizedBox(),
+          isTopByPost
+              ? SizedBox.square(
+                dimension: size,
+                child: Image.asset('assets/images/profile_border.png'),
+              )
+              : SizedBox(),
+          isTopByLike
+              ? SizedBox.square(
+                dimension: size,
+                child: Image.asset('assets/images/profile_border.png'),
+              )
+              : SizedBox(),
         ],
       ),
     );
