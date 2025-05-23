@@ -2,10 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+		<string>${DART_DEBUG_BONJOUR_SERVICE}</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>로컬 네트워크 접근이 필요합니다.</string>
+	
+
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Gangaji Pul</string>
+	<string>강아지풀</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -45,5 +56,45 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.218305786593-lvk7g1n79ksva0v15sbl6i59ci6ql7o1</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>google</string>
+		<string>com.google</string>
+		<string>com.google.chrome.ios</string>
+		<string>com.google.chrome.ios.open</string>
+		<string>com.google.chrome.ios.incognito</string>
+		<string>googlechrome</string>
+	</array>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>google</string>
+        <string>com.google</string>
+        <string>com.google.chrome.ios</string>
+        <string>com.google.chrome.ios.open</string>
+        <string>com.google.chrome.ios.incognito</string>
+        <string>googlechrome</string>
+    </array>
+
+    <!-- 이미지 권한 -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>사진을 선택하기 위해 권한이 필요합니다.</string>
+    <key>NSCameraUsageDescription</key>
+	<string>사진을 찍기 위해 카메라 접근이 필요합니다.</string>
+
+	<key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-8918591811866398~5962983517</string>
+
 </dict>
 </plist>

@@ -23,6 +23,15 @@ migrate_working_dir/
 # is commented out by default.
 #.vscode/
 
+#.env파일
+.env
+
+# Firebase 설정 파일
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+firebase_options.dart
+firebase.json
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
@@ -43,3 +52,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+macos/Flutter/GeneratedPluginRegistrant.swift
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugins.cmake
+android/key.properites

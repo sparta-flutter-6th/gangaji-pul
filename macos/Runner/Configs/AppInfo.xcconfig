@@ -8,7 +8,7 @@
 PRODUCT_NAME = gangaji_pul
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.gangajiPul
+PRODUCT_BUNDLE_IDENTIFIER = com.sparta.gangajiPul
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2025 com.sparta. All rights reserved.

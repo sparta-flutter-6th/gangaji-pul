@@ -1,4 +1,4 @@
-package com.example.gangaji_pul
+package com.sparta.gangaji_pul
 
 import io.flutter.embedding.android.FlutterActivity
 
