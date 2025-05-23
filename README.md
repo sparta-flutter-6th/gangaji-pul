@@ -1,6 +1,6 @@
 # 강아지풀 - 반려견 산책 인증 어플
 
-<img src="https://github.com/user-attachments/assets/d69b7809-40be-45ea-b61c-e8dc3c2adef4"  width="200" height="200>
+<img src="https://github.com/user-attachments/assets/d69b7809-40be-45ea-b61c-e8dc3c2adef4"  width="200" height="200/>
 
  
 ## 📌 프로젝트 소개
