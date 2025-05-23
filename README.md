@@ -1,6 +1,6 @@
 # 강아지풀 - 반려견 산책 인증 어플
 
-<img src="https://github.com/user-attachments/assets/d69b7809-40be-45ea-b61c-e8dc3c2adef4"  width="200" height="200
+<img src="https://github.com/user-attachments/assets/d69b7809-40be-45ea-b61c-e8dc3c2adef4"  width="200" height="200>
 
  
 ## 📌 프로젝트 소개
@@ -22,13 +22,16 @@
 
 ## 📱 스크린샷
 
-![Screenshot_1747967064](https://github.com/user-attachments/assets/dbb74154-c7b0-4137-bf7c-8e3ac3045ce0)
-![Screenshot_1747967060](https://github.com/user-attachments/assets/f0bef8a6-9c2e-42ed-849d-6f519d764d02)
-![Screenshot_1747967021](https://github.com/user-attachments/assets/cd9728ae-4290-4392-b6c8-35e12b19dc58)
-![Screenshot_1747967017](https://github.com/user-attachments/assets/3daf8462-dd19-4114-a52b-19c72c60c47b)
-![Screenshot_1747967012](https://github.com/user-attachments/assets/49a6eed4-e7a2-4699-b3c7-4d4b07ea6f79)
-![Screenshot_1747967003](https://github.com/user-attachments/assets/090af913-140c-4fb1-a285-7c195f05d9c6)
-![Screenshot_1747966996](https://github.com/user-attachments/assets/6dc8a8a2-9113-411b-a750-ddd98ba97e60)
+
+<div style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 10px; margin-bottom: 20px;">
+  <img src="https://github.com/user-attachments/assets/dbb74154-c7b0-4137-bf7c-8e3ac3045ce0" width="200"/>
+  <img src="https://github.com/user-attachments/assets/f0bef8a6-9c2e-42ed-849d-6f519d764d02" width="200" />
+  <img src="https://github.com/user-attachments/assets/cd9728ae-4290-4392-b6c8-35e12b19dc58" width="200" />
+  <img src="https://github.com/user-attachments/assets/3daf8462-dd19-4114-a52b-19c72c60c47b" width="200" />
+  <img src="https://github.com/user-attachments/assets/49a6eed4-e7a2-4699-b3c7-4d4b07ea6f79" width="200" />
+  <img src="https://github.com/user-attachments/assets/090af913-140c-4fb1-a285-7c195f05d9c6" width="200" />
+  <img src="https://github.com/user-attachments/assets/6dc8a8a2-9113-411b-a750-ddd98ba97e60" width="200" />
+</div>
 
 
 ## 🎯 주요 기능
