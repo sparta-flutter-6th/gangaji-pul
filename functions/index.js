@@ -1,11 +1,8 @@
 const { onDocumentCreated, onDocumentDeleted } = require("firebase-functions/v2/firestore");
 const admin = require("firebase-admin");
-
 const { getFirestore } = require("firebase-admin/firestore");
-
 admin.initializeApp();
 const db = getFirestore();
-
 exports.incrementUserPostCount =
   onDocumentCreated("/posts/{postId}", async (event) => {
     const uid = event.data.data().userId;
@@ -48,7 +45,9 @@ exports.decrementUserPostCount =
   });
 exports.incrementUserlikeCount =
   onDocumentCreated("/posts/{postId}/likes/{userId}", async (event) => {
-    const { userId } = event.params;
+    const { postId } = event.params;
+    const postRef = await db.collection("posts").doc(postId).get();
+    const userId = postRef.data().userId;
     const docRef = db.collection("users").doc(userId);
     const user = await docRef.get();
     await docRef.update({
@@ -66,10 +65,11 @@ exports.incrementUserlikeCount =
       "users": [...topUsersBylikeCount]
     }, { merge: true });
   });
-
 exports.decrementUserlikeCount =
   onDocumentDeleted("/posts/{postId}/likes/{userId}", async (event) => {
-    const { userId } = event.params;
+    const { postId } = event.params;
+    const postRef = await db.collection("posts").doc(postId).get();
+    const userId = postRef.data().userId;
     const docRef = db.collection("users").doc(userId);
     const user = await docRef.get();
     await docRef.update({
@@ -87,13 +87,11 @@ exports.decrementUserlikeCount =
       "users": [...topUsersBylikeCount]
     }, { merge: true });
   });
-
 exports.incrementUserChatCount =
   onDocumentCreated("/chats/{chatId}", async (event) => {
     const chatData = event.data?.data();
     if (!chatData) return;
     const userPath = chatData.user;
-
     const userId = userPath.id; // 안전한 접근 방식
     console.log("유저 ID:", userId);
     const docRef = db.collection("users").doc(userId);
