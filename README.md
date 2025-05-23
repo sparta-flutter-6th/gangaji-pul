@@ -2,10 +2,13 @@
 
 <img src="https://github.com/user-attachments/assets/d69b7809-40be-45ea-b61c-e8dc3c2adef4" width="200"/>
 
+
  
 ## 📌 프로젝트 소개
 
 강아지가 풀냄새를 맡으며 천천히 걷는 그 시간을 놓치지 않도록 도와주는 산책 유도 앱 입니다.
+
+
 
 ## 🌟 기획배경
 
@@ -20,8 +23,8 @@
  “산책을 습관으로 만들고 싶은 보호자”를 위한 앱을 만들었어요
 
 
-## 📱 스크린샷
 
+## 📱 스크린샷
 
 <div style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 10px; margin-bottom: 20px;">
   <img src="https://github.com/user-attachments/assets/dbb74154-c7b0-4137-bf7c-8e3ac3045ce0" width="200"/>
@@ -32,6 +35,7 @@
   <img src="https://github.com/user-attachments/assets/090af913-140c-4fb1-a285-7c195f05d9c6" width="200" />
   <img src="https://github.com/user-attachments/assets/6dc8a8a2-9113-411b-a750-ddd98ba97e60" width="200" />
 </div>
+
 
 
 ## 🎯 주요 기능
@@ -47,6 +51,7 @@
 💬 소통 기능: 댓글과 좋아요로 응원 주고받기
 
 🏆 유저 랭킹: 활동 많은 유저 순위 제공
+
 
 
 ## 📋 프로젝트 구조
@@ -168,6 +173,8 @@ lib
  ┗ router.dart
 ```
 
+
+
 ## 📋 firebase 데이터 구조
 
 ###  users
@@ -236,6 +243,7 @@ topUsers
 ```
 
 
+
 ## 📋 firebase cloud function
 
 - **incrementUserPostCount**: 게시글 작성 시 postCount 증가
@@ -243,6 +251,7 @@ topUsers
 - **incrementUserlikeCount**: 좋아요 누를 때 likeCount 증가
 - **decrementUserlikeCount**: 좋아요 취소 시 likeCount 감소
 - **incrementUserChatCount**: 채팅 발생 시 chatCount 증가
+
 
 
 ## 📦 패키지
@@ -258,6 +267,8 @@ topUsers
 - **Google Mobile Ads**: 광고
 - **Cloud Firestore**: 데이터베이스
 - **Firebase Functions**: 백그라운드 이벤트
+
+
 
 ## 👥 팀원
 
