@@ -8,7 +8,8 @@
 
 강아지가 풀냄새를 맡으며 천천히 걷는 그 시간을 놓치지 않도록 도와주는 산책 유도 앱 입니다.
 
-
+</br>
+</br>
 
 ## 🌟 기획배경
 
@@ -22,7 +23,8 @@
 그래서 산책 알림, 산책 인증, 유저 간 공감을 통해
  “산책을 습관으로 만들고 싶은 보호자”를 위한 앱을 만들었어요
 
-
+</br>
+</br>
 
 ## 📱 스크린샷
 
@@ -37,7 +39,8 @@
 </div>
 
 
-
+</br>
+</br>
 ## 🎯 주요 기능
 
 📸 산책 인증: 사진으로 산책 기록 남기기
@@ -52,7 +55,8 @@
 
 🏆 유저 랭킹: 활동 많은 유저 순위 제공
 
-
+</br>
+</br>
 
 ## 📋 프로젝트 구조
 
@@ -173,7 +177,8 @@ lib
  ┗ router.dart
 ```
 
-
+</br>
+</br>
 
 ## 📋 firebase 데이터 구조
 
@@ -242,6 +247,8 @@ topUsers
         ]
 ```
 
+</br>
+</br>
 
 
 ## 📋 firebase cloud function
@@ -252,6 +259,8 @@ topUsers
 - **decrementUserlikeCount**: 좋아요 취소 시 likeCount 감소
 - **incrementUserChatCount**: 채팅 발생 시 chatCount 증가
 
+</br>
+</br>
 
 
 ## 📦 패키지
@@ -269,7 +278,8 @@ topUsers
 - **Firebase Functions**: 백그라운드 이벤트
 
 
-
+</br>
+</br>
 ## 👥 팀원
 
 | 이름                           | GitHub                                      |
